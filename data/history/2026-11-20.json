@@ -1,0 +1,311 @@
+{
+  "date": "2026-11-20",
+  "display_date_th": "20 พ.ย. 2026 (ศ.)",
+  "month_key": "2026-11",
+  "month_label_th": "พฤศจิกายน 2026",
+  "report_time_bkk": "2026-11-20 08:00 ICT (UTC+7)",
+  "scheduled_slot_bkk": "08:00 ICT (UTC+7)",
+  "is_weekend": false,
+  "is_holiday": false,
+  "holiday_name_th": "",
+  "short_status_th": "ตลาดเปิด",
+  "market_status_overall": "วันทำการ • อ้างอิงราคาปิด 20 พ.ย. 2026",
+  "kpis": [
+    {
+      "id": "usd_thb",
+      "name": "USD/THB",
+      "category": "FX",
+      "unit": "THB/USD",
+      "company": "ALL",
+      "price": 33.95,
+      "price_display": "33.95",
+      "price_badge_th": "ราคาปิด ณ 20 พ.ย. 2026",
+      "price_precision_note": "BOT 33.953 / TE Spot 33.9510",
+      "price_basis": "Prior Close",
+      "price_type": "Weighted-avg Interbank / Spot Close",
+      "change_pct": -0.06,
+      "change_display": "-0.06% DoD",
+      "comparison_base": "เทียบ 19 พ.ย. (33.9700)",
+      "observation_date": "2026-11-20",
+      "market_status": "ปิดตลาดแล้ว",
+      "data_quality": "VERIFIED CURRENT",
+      "financial_impact": "บาทอ่อนค่าใกล้ 34.00 THB/USD กดดันต้นทุนนำเข้าวัตถุดิบและพลังงานของ KBI/BGA แต่หนุนรายได้ส่งออก (รอข้อมูลภายใน: Net FX Exposure)",
+      "source_name": "BOT & Trading Economics",
+      "source_url": "https://www.bot.or.th/en/statistics/exchange-rate.html"
+    },
+    {
+      "id": "brent_oil",
+      "name": "Brent Oil",
+      "category": "Energy",
+      "unit": "USD/bbl",
+      "company": "ALL",
+      "price": 92.57,
+      "price_display": "92.57",
+      "price_badge_th": "ราคาปิด ณ 20 พ.ย. 2026",
+      "price_precision_note": "Previous Close: 91.98 USD/bbl",
+      "price_basis": "Prior Close",
+      "price_type": "Front-Month Futures/CFD Close",
+      "change_pct": 0.64,
+      "change_display": "+0.64% DoD",
+      "comparison_base": "เทียบ 19 พ.ย. (91.98 USD/bbl)",
+      "observation_date": "2026-11-20",
+      "market_status": "ปิดตลาดแล้ว",
+      "data_quality": "VERIFIED CURRENT",
+      "financial_impact": "ดีดตัวเล็กน้อย +0.64% แต่รายเดือนยังลดลง -14.93% ช่วยลดแรงกดดันต้นทุนพลังงานของ KBI และ BGA (รอข้อมูลภายใน)",
+      "source_name": "Trading Economics",
+      "source_url": "https://tradingeconomics.com/commodity/brent-crude-oil"
+    },
+    {
+      "id": "lme_aluminium",
+      "name": "LME Aluminium",
+      "category": "Raw Material",
+      "unit": "USD/t",
+      "company": "BGA",
+      "price": 3184.5,
+      "price_display": "3,184.50",
+      "price_badge_th": "ราคาปิด ณ 20 พ.ย. 2026",
+      "price_precision_note": "3M: 2,831.50 USD/t | Stock: 223,525 t",
+      "price_basis": "Prior Close",
+      "price_type": "LME Official Cash-Settlement",
+      "change_pct": 2.56,
+      "change_display": "+2.56% DoD",
+      "comparison_base": "เทียบ Cash 19 พ.ย. (3,105.00 USD/t)",
+      "observation_date": "2026-11-20",
+      "market_status": "ปิดตลาดแล้ว",
+      "data_quality": "VERIFIED CURRENT",
+      "financial_impact": "ราคา Cash พุ่ง +79.50 USD/t กดดันต้นทุน Prompt ของ BGA ขณะที่สัญญา 3M ถูกกว่า 353.00 USD/t (รอข้อมูลภายใน: สัญญาซื้อ & Hedging)",
+      "source_name": "Westmetall",
+      "source_url": "https://www.westmetall.com/en/markdaten.php?action=table&field=LME_Al_cash"
+    },
+    {
+      "id": "soda_ash",
+      "name": "Soda Ash (FOB China)",
+      "category": "Raw Material",
+      "unit": "USD/MT",
+      "company": "KBI",
+      "price": 156.23,
+      "price_display": "156.23",
+      "price_badge_th": "ดัชนี ณ ต.ค. 2026",
+      "price_precision_note": "General Market Proxy (Dense ส.ค.: 161.00)",
+      "price_basis": "Monthly Benchmark",
+      "price_type": "FOB China Monthly Assessment",
+      "change_pct": 0.0,
+      "change_display": "0.00% MoM",
+      "comparison_base": "เทียบ ก.ย. 2026 (156.23 USD/MT)",
+      "observation_date": "October 2026",
+      "market_status": "รายเดือนล่าสุด",
+      "data_quality": "VERIFIED LATEST",
+      "financial_impact": "FOB China (General Proxy) ทรงตัวที่ 156.23 USD/MT เดือน ต.ค. 2026 เป็นสัญญาณทิศทางเท่านั้น ไม่ใช่ต้นทุน Landed ของ KBI (รอข้อมูลภายใน)",
+      "source_name": "Procurement Resource",
+      "source_url": "https://www.procurementresource.com/resource-center/soda-ash-price-trends"
+    }
+  ],
+  "soda_ash_supplementary_context": [
+    {
+      "label": "Soda Ash (Dense) — FOB China (งวดก่อนหน้า)",
+      "price": "161.00 USD/MT (-5.29% MoM จาก Jul 2026: 170.00 USD/MT)",
+      "usd_note": "เกรด Dense บนฐาน FOB China ล่าสุดเดือน ส.ค. 2026 (เก่ากว่า General ต.ค. 2026)",
+      "period": "August 2026",
+      "source_name": "Procurement Resource (Dense)",
+      "source_url": "https://www.procurementresource.com/resource-center/soda-ash-dense-price-trends"
+    },
+    {
+      "label": "East China Domestic Reference (Dense / Light)",
+      "price": "RMB 1,150/MT (Dense) | RMB 1,000/MT (Light)",
+      "usd_note": "อ้างอิงในประเทศจีน (~172 USD / ~149 USD — ไม่ใช่ราคาส่งออก FOB)",
+      "period": "5 พ.ย. 2026",
+      "source_name": "Jinan ZZ / Chcachem",
+      "source_url": "https://www.chcachem.com/news/2026-11-06-china-soda-ash-market-update"
+    }
+  ],
+  "decision_cards": [
+    {
+      "priority_status": "ต้องตัดสินใจ",
+      "priority_level": "critical",
+      "company": "BGA",
+      "headline": "LME Aluminium Cash ดีด +2.56% สู่ 3,184.50 USD/t ดัน Backwardation แตะ +353.00 USD/t",
+      "financial_impact": "เพิ่มต้นทุนสั่งซื้อ Prompt/Spot ของ BGA สูงกว่าสัญญา 3-Month อย่างมีนัยสำคัญ",
+      "recommended_action": "ตรวจสอบสัญญาสูตรราคา Spot vs 3M และระดับสต็อกคงเหลือของ BGA (รอข้อมูลภายในบริษัท)",
+      "owner": "CFO & COO",
+      "review_point": "ทบทวนเมื่อ Cash–3M Spread > 250.00 USD/t"
+    },
+    {
+      "priority_status": "ควรพิจารณา",
+      "priority_level": "warning",
+      "company": "ALL",
+      "headline": "USD/THB เคลื่อนไหวใกล้ 34.00 THB/USD (BOT 33.953)",
+      "financial_impact": "เพิ่มต้นทุนนำเข้าวัตถุดิบและค่าขนส่งสกุล USD ในรูปเงินบาทของทั้ง KBI และ BGA",
+      "recommended_action": "ตรวจสอบ Net USD Exposure และวงเงิน FX Forward ที่เหลืออยู่ (รอข้อมูลภายในบริษัท)",
+      "owner": "CFO",
+      "review_point": "ทบทวนเมื่อ USD/THB ทะลุ 34.00 THB/USD"
+    },
+    {
+      "priority_status": "เฝ้าระวัง",
+      "priority_level": "watch",
+      "company": "ALL",
+      "headline": "สายเรือเตรียมเก็บ PSS ยุโรป 1,000–1,600 USD/FEU เริ่ม ธ.ค. 2026",
+      "financial_impact": "เสี่ยงดันค่าขนส่งส่งออกปลายปีสูงขึ้นแม้ดัชนี WCI รวมจะลดลง 3% WoW",
+      "recommended_action": "เร่งสรุปตารางส่งมอบและจองระวางเรือสำหรับออเดอร์เดือน ธ.ค.",
+      "owner": "COO & โลจิสติกส์",
+      "review_point": "ก่อนสิ้นเดือน พ.ย. 2026"
+    }
+  ],
+  "executive_3rows": [
+    {
+      "num": 1,
+      "label": "SITUATION — สถานการณ์สำคัญ",
+      "headline": "วันศุกร์ 20 พ.ย. LME Cash พุ่ง 3,184.50 USD/t (+2.56%), Brent 92.57 USD/bbl, บาททรงตัว 33.95",
+      "detail": "LME Backwardation กว้าง +353.00 USD/t ท่ามกลางสต็อกลดเหลือ 223,525 ตัน ขณะ Brent ลดลงต่อเนื่องสัปดาห์ที่ 3, USD/THB ใกล้แนวต้าน 34.00 และ Soda Ash FOB China (General Proxy) อยู่ที่ 156.23 USD/MT"
+    },
+    {
+      "num": 2,
+      "label": "BUSINESS IMPACT — ผลกระทบต่อ KBI / BGA",
+      "headline": "BGA รับแรงกดดันต้นทุน Spot สูงกว่า KBI ที่ได้แรงช่วยจาก Brent และ Soda Ash ทรงตัว",
+      "detail": "BGA เสี่ยง Margin Compression จาก LME Cash และคดี AD อินเดีย ส่วน KBI รอข้อมูลสัญญา Soda Ash ภายในเทียบกับบาทอ่อน"
+    },
+    {
+      "num": 3,
+      "label": "MANAGEMENT RESPONSE — สิ่งที่ผู้บริหารควรทำ",
+      "headline": "ตรวจสอบสต็อก-สัญญา LME, Net FX Exposure และจองระวางเรือล่วงหน้า",
+      "detail": "CFO และ COO ตรวจ Exposure และสัญญาซื้อภายในบริษัทให้ครบถ้วนก่อนปรับแผนจัดซื้อหรือบริหารความเสี่ยง"
+    }
+  ],
+  "lme_60d_series": [
+    {"d":"2026-09-22","cash":3242.0,"m3":3264.0,"stock":242125},
+    {"d":"2026-09-24","cash":3228.0,"m3":3252.5,"stock":241375},
+    {"d":"2026-09-28","cash":3248.5,"m3":3252.0,"stock":241375},
+    {"d":"2026-09-30","cash":3204.0,"m3":3210.0,"stock":241375},
+    {"d":"2026-10-02","cash":3109.5,"m3":3122.0,"stock":240375},
+    {"d":"2026-10-06","cash":3134.5,"m3":3148.5,"stock":238875},
+    {"d":"2026-10-08","cash":3060.5,"m3":3069.0,"stock":238875},
+    {"d":"2026-10-12","cash":3055.0,"m3":3060.0,"stock":238625},
+    {"d":"2026-10-15","cash":2999.0,"m3":2994.5,"stock":238125},
+    {"d":"2026-10-19","cash":3019.0,"m3":3012.0,"stock":236375},
+    {"d":"2026-10-22","cash":3033.0,"m3":3008.0,"stock":236025},
+    {"d":"2026-10-26","cash":3047.5,"m3":3027.0,"stock":234050},
+    {"d":"2026-10-29","cash":3071.0,"m3":3064.0,"stock":231675},
+    {"d":"2026-11-02","cash":3095.0,"m3":3060.0,"stock":230775},
+    {"d":"2026-11-05","cash":3160.0,"m3":3097.5,"stock":228475},
+    {"d":"2026-11-09","cash":3147.0,"m3":3059.5,"stock":226975},
+    {"d":"2026-11-11","cash":3223.5,"m3":3064.0,"stock":226725},
+    {"d":"2026-11-13","cash":3150.5,"m3":3018.0,"stock":224150},
+    {"d":"2026-11-16","cash":3332.0,"m3":3020.0,"stock":221900},
+    {"d":"2026-11-17","cash":3060.5,"m3":2940.0,"stock":220350},
+    {"d":"2026-11-18","cash":3095.0,"m3":2865.0,"stock":226150},
+    {"d":"2026-11-19","cash":3105.0,"m3":2845.0,"stock":224425},
+    {"d":"2026-11-20","cash":3184.5,"m3":2831.5,"stock":223525}
+  ],
+  "news": [
+    {
+      "id": "n1",
+      "tier": "top_alert",
+      "title": "LME Aluminium Cash พุ่ง +2.56% สู่ 3,184.50 USD/t ขณะสต็อกลดเหลือ 223,525 ตัน",
+      "priority_tier": "FX, Energy, Raw Materials, Industry Demand",
+      "company": "BGA",
+      "published_at": "2026-11-20",
+      "what": "Westmetall รายงานราคา Cash-Settlement พุ่งขึ้นจาก 3,105.00 เป็น 3,184.50 USD/t",
+      "so_what": "ต้นทุนอะลูมิเนียม Spot ของ BGA สูงกว่าสัญญา 3 เดือนถึง 353.00 USD/t",
+      "financial": "กดดัน Margin และ Working Capital หากไม่มีสัญญาอ้างอิง 3M (รอข้อมูลภายในบริษัท)",
+      "now_what": "ตรวจสอบสัญญาจัดซื้อและสัดส่วน Spot vs 3M",
+      "owner": "COO & CFO",
+      "source_name": "Westmetall",
+      "source_url": "https://www.westmetall.com/en/markdaten.php?action=table&field=LME_Al_cash"
+    },
+    {
+      "id": "n2",
+      "tier": "top_alert",
+      "title": "ดอลลาร์แข็งค่าสูงสุดรอบ 19 เดือน กดดันบาทอ่อนจ่อ 34.00 THB/USD และทองคำโลกร่วง 2.8%",
+      "priority_tier": "FX, Energy, Raw Materials, Industry Demand",
+      "company": "ALL",
+      "published_at": "2026-11-20",
+      "what": "คาดการณ์ Fed ขึ้นดอกเบี้ย 0.25% ใน ธ.ค. หนุนดอลลาร์แข็งค่า กดดันทั้งบาทอ่อนค่าใกล้ 34.00 THB/USD และทองคำร่วงสู่ 3,518.50 USD/oz (แรงซื้อทองคำในประเทศช่วงราคาลงเพิ่มดีมานด์ดอลลาร์)",
+      "so_what": "เพิ่มต้นทุนนำเข้าสกุล USD ของทั้ง KBI และ BGA",
+      "financial": "เพิ่มความเสี่ยงต้นทุนนำเข้าในรูปเงินบาท (รอข้อมูลภายในบริษัท)",
+      "now_what": "ตรวจ Net FX Exposure ที่ระดับ 33.95–34.00",
+      "owner": "CFO",
+      "source_name": "The Nation Thailand / BigGo Finance",
+      "source_url": "https://www.nationthailand.com/business/trading-investment/40073748"
+    },
+    {
+      "id": "n3",
+      "tier": "top_alert",
+      "title": "อินเดียเปิดไต่สวน Anti-Dumping อะลูมิเนียม Extrusion จากไทย จีน มาเลเซีย เวียดนาม",
+      "priority_tier": "Logistics, Trade Policy, Interest Rates, Regional Economy",
+      "company": "BGA",
+      "published_at": "2026-11-19",
+      "what": "DGTR อินเดียเริ่มสอบสวน AD ครอบคลุมสินค้าโปรไฟล์ก่อสร้างและอุตสาหกรรม",
+      "so_what": "กระทบความเสี่ยงส่งออกของ BGA และภาวะการแข่งขันในอาเซียน",
+      "financial": "เสี่ยงต่อรายได้ส่งออกอินเดียและแรงกดดันราคาขายในประเทศ",
+      "now_what": "ตรวจสอบยอดส่งออกไปอินเดียและเตรียมข้อมูลต้นทุน",
+      "owner": "CEO & ฝ่ายขาย",
+      "source_name": "AL Circle",
+      "source_url": "https://www.alcircle.com/news/india-probes-aluminium-dumping-by-china-malaysia-vietnam-thailand-vedanta-hindalco-shares-eyed-122026"
+    },
+    {
+      "id": "n4",
+      "tier": "watchlist",
+      "title": "Brent ปิด 92.57 USD/bbl (+0.64%) แต่ยังอ่อนตัวลงรายสัปดาห์ต่อเนื่องเป็นสัปดาห์ที่ 3",
+      "priority_tier": "FX, Energy, Raw Materials, Industry Demand",
+      "company": "ALL",
+      "published_at": "2026-11-20",
+      "what": "ปริมาณส่งออกผ่านฮอร์มุซฟื้นตัวและ IEA คาดตลาดเกินดุลใน Q4",
+      "so_what": "เป็นสัญญาณบวกต่อแนวโน้มต้นทุนพลังงานของ KBI และโลจิสติกส์ของ BGA",
+      "financial": "ช่วยพยุง Gross Margin หากราคาน้ำมันทรงตัวต่ำกว่า 95.00 USD/bbl",
+      "now_what": "ติดตามประชุม OPEC+ และส่วนลด Fuel Surcharge",
+      "owner": "COO & จัดซื้อ",
+      "source_name": "Trading Economics",
+      "source_url": "https://tradingeconomics.com/commodity/brent-crude-oil"
+    },
+    {
+      "id": "n5",
+      "tier": "watchlist",
+      "title": "Drewry WCI ลดลงสู่ 4,176 USD/FEU (-3% WoW) แต่สายเรือเตรียมเก็บ PSS ยุโรป ธ.ค. นี้",
+      "priority_tier": "Logistics, Trade Policy, Interest Rates, Regional Economy",
+      "company": "ALL",
+      "published_at": "2026-11-19",
+      "what": "เส้นทาง Transpacific อ่อนตัวลง แต่ Asia–Med พุ่ง +6% พร้อมประกาศ PSS 1,000–1,600 USD/FEU",
+      "so_what": "กระทบต้นทุนค่าขนส่งส่งออกและระยะเวลาคืนตู้คอนเทนเนอร์ของ KBI/BGA",
+      "financial": "เพิ่มความเสี่ยง Freight Cost ปลายปี",
+      "now_what": "จองระวางเรือล่วงหน้าสำหรับออเดอร์ส่งมอบ ธ.ค.",
+      "owner": "COO & โลจิสติกส์",
+      "source_name": "Drewry Maritime Research",
+      "source_url": "https://www.drewry.co.uk/maritime-research-opinion-browser/world-container-index-assessed-by-drewry"
+    }
+  ],
+  "impact_matrix": [
+    {
+      "driver": "USD/THB 33.95 (-0.06% DoD)",
+      "kbi_indicator": "🟡 ต้องติดตาม",
+      "kbi_text": "ต้นทุนนำเข้า Soda Ash ในรูปบาททรงตัวสูง (รอข้อมูลภายใน: Net FX)",
+      "bga_indicator": "🟡 ต้องติดตาม",
+      "bga_text": "ต้นทุนนำเข้าอะลูมิเนียมในรูปบาททรงตัวสูง (รอข้อมูลภายใน: Net FX)",
+      "management_implication": "CFO ติดตามแนวต้าน 34.00 THB/USD"
+    },
+    {
+      "driver": "LME Aluminium Cash 3,184.50 USD/t (+2.56%)",
+      "kbi_indicator": "⚪ ไม่มีผลกระทบโดยตรงที่ยืนยันได้",
+      "kbi_text": "ไม่ใช่วัตถุดิบหลักของ KBI",
+      "bga_indicator": "🔴 ผลกระทบเชิงลบสูง",
+      "bga_text": "Backwardation +353.00 USD/t กดดันต้นทุน Prompt ของ BGA",
+      "management_implication": "COO ตรวจสัดส่วน Spot vs 3M"
+    }
+  ],
+  "management_actions": [
+    {
+      "priority": "P1",
+      "business": "BGA",
+      "action": "ทบทวนสัดส่วน Spot vs 3M Forward หลัง LME Backwardation ถ่างกว้าง +353.00 USD/t (รอข้อมูลภายใน)",
+      "owner": "CFO & COO",
+      "timeline": "ทันที",
+      "trigger": "Spread Cash–3M > 250.00 USD/t"
+    },
+    {
+      "priority": "P1",
+      "business": "ALL",
+      "action": "ตรวจสอบ Net FX Exposure เพื่อเตรียมทางเลือกบริหารความเสี่ยงหาก USD/THB ทะลุ 34.00",
+      "owner": "CFO",
+      "timeline": "ทันที",
+      "trigger": "USD/THB > 34.00 THB/USD"
+    }
+  ]
+}

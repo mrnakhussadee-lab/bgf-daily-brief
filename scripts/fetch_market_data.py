@@ -1,0 +1,671 @@
+#!/usr/bin/env python3
+"""
+BGF Daily Brief — Zero-Token Deterministic Market & News Fetcher
+Runs daily at 08:00 Asia/Bangkok (01:00 UTC).
+
+Rules implemented:
+1. Open vs Prior Close: Uses today's opening price if the market is open at 08:00 ICT
+   and an open quote is verified; otherwise falls back to last night's / last business day's close.
+2. Token-efficiency: Fetches raw KPIs and compact news headlines into data/today_raw.json (~4 KB)
+   and caches monthly Soda Ash checks in data/soda_ash_cache.json.
+3. Zero external dependencies (Python 3.10+ stdlib only).
+"""
+
+from __future__ import annotations
+
+import argparse
+import datetime as dt
+import json
+import re
+import sys
+import urllib.error
+import urllib.request
+import xml.etree.ElementTree as ET
+from pathlib import Path
+from typing import Any
+from zoneinfo import ZoneInfo
+
+BKK_TZ = ZoneInfo("Asia/Bangkok")
+ROOT_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR = ROOT_DIR / "data"
+HISTORY_DIR = DATA_DIR / "history"
+SODA_CACHE_PATH = DATA_DIR / "soda_ash_cache.json"
+TODAY_RAW_PATH = DATA_DIR / "today_raw.json"
+MANIFEST_PATH = DATA_DIR / "history_manifest.json"
+
+USER_AGENT = (
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
+)
+
+# Bank of Thailand / Thai Public Holidays (2026-2027)
+TH_PUBLIC_HOLIDAYS: dict[str, str] = {
+    "2026-01-01": "วันขึ้นปีใหม่",
+    "2026-01-02": "วันหยุดพิเศษปีใหม่",
+    "2026-03-03": "วันมาฆบูชา",
+    "2026-04-06": "วันจักรี",
+    "2026-04-13": "วันสงกรานต์",
+    "2026-04-14": "วันสงกรานต์",
+    "2026-04-15": "วันสงกรานต์",
+    "2026-05-01": "วันแรงงานแห่งชาติ",
+    "2026-05-04": "วันฉัตรมงคล",
+    "2026-06-01": "ชดเชยวันวิสาขบูชา",
+    "2026-06-03": "วันเฉลิมพระชนมพรรษาพระราชินี",
+    "2026-07-29": "วันอาสาฬหบูชา",
+    "2026-08-12": "วันแม่แห่งชาติ",
+    "2026-10-13": "วันนวมินทรมหาราช",
+    "2026-10-23": "วันปิยมหาราช",
+    "2026-12-05": "วันชาติ / วันพ่อแห่งชาติ",
+    "2026-12-07": "ชดเชยวันพ่อแห่งชาติ",
+    "2026-12-10": "วันรัฐธรรมนูญ",
+    "2026-12-31": "วันสิ้นปี",
+    "2027-01-01": "วันขึ้นปีใหม่",
+    "2027-02-22": "ชดเชยวันมาฆบูชา",
+    "2027-04-06": "วันจักรี",
+    "2027-04-13": "วันสงกรานต์",
+    "2027-04-14": "วันสงกรานต์",
+    "2027-04-15": "วันสงกรานต์",
+    "2027-05-03": "ชดเชยวันแรงงานแห่งชาติ",
+    "2027-05-04": "วันฉัตรมงคล",
+    "2027-05-20": "วันวิสาขบูชา",
+    "2027-06-03": "วันเฉลิมพระชนมพรรษาพระราชินี",
+    "2027-07-19": "วันอาสาฬหบูชา",
+    "2027-07-20": "วันเข้าพรรษา",
+    "2027-08-12": "วันแม่แห่งชาติ",
+    "2027-10-13": "วันนวมินทรมหาราช",
+    "2027-10-25": "ชดเชยวันปิยมหาราช",
+    "2027-12-05": "วันชาติ / วันพ่อแห่งชาติ",
+    "2027-12-06": "ชดเชยวันพ่อแห่งชาติ",
+    "2027-12-10": "วันรัฐธรรมนูญ",
+    "2027-12-31": "วันสิ้นปี",
+}
+
+# Major UK/US Global Exchange Holidays (LME / ICE Brent)
+GLOBAL_MARKET_HOLIDAYS: dict[str, str] = {
+    "2026-12-25": "Christmas Day (Global Markets Closed)",
+    "2026-12-28": "Boxing Day Substitute (UK/LME Closed)",
+    "2027-01-01": "New Year's Day (Global Markets Closed)",
+    "2027-03-26": "Good Friday (Global Markets Closed)",
+    "2027-03-29": "Easter Monday (UK/LME Closed)",
+    "2027-12-27": "Christmas Substitute (Global Markets Closed)",
+    "2027-12-28": "Boxing Day Substitute (UK/LME Closed)",
+}
+
+
+def get_holiday_info(date_obj: dt.date) -> dict[str, Any]:
+    iso = date_obj.isoformat()
+    th_name = TH_PUBLIC_HOLIDAYS.get(iso, "")
+    global_name = GLOBAL_MARKET_HOLIDAYS.get(iso, "")
+    is_weekend = date_obj.weekday() >= 5
+    is_th_holiday = bool(th_name)
+    is_global_holiday = bool(global_name)
+    is_holiday = is_th_holiday or is_global_holiday
+    if is_th_holiday:
+        short_status = "วันหยุดนักขัตฤกษ์"
+    elif is_global_holiday:
+        short_status = "วันหยุดตลาดโลก"
+    elif is_weekend:
+        short_status = "ตลาดปิด"
+    else:
+        short_status = "ตลาดเปิด"
+    return {
+        "is_weekend": is_weekend,
+        "is_th_holiday": is_th_holiday,
+        "is_global_holiday": is_global_holiday,
+        "is_holiday": is_holiday,
+        "holiday_name_th": th_name or global_name,
+        "short_status_th": short_status,
+    }
+
+
+def http_get(url: str, timeout: int = 15) -> str | None:
+    req = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": USER_AGENT,
+            "Accept": "text/html,application/json,application/xml;q=0.9,*/*;q=0.8",
+        },
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return resp.read().decode("utf-8", errors="replace")
+    except Exception as exc:
+        print(f"[WARN] Failed GET {url}: {exc}", file=sys.stderr)
+        return None
+
+
+def fetch_yahoo_quote(symbol: str, now_bkk: dt.datetime) -> dict[str, Any]:
+    """
+    Fetches chart metadata/OHLC from Yahoo Finance v8 chart endpoint.
+    Applies Open-vs-Prior-Close rule for 08:00 ICT (respecting weekends & holidays).
+    """
+    url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?range=7d&interval=1d"
+    raw = http_get(url)
+    if not raw:
+        return {"ok": False, "error": "Yahoo Finance unreachable"}
+
+    try:
+        payload = json.loads(raw)
+        result = payload["chart"]["result"][0]
+        meta = result["meta"]
+        timestamps = result.get("timestamp", [])
+        quote = result["indicators"]["quote"][0]
+        opens = quote.get("open", [])
+        closes = quote.get("close", [])
+
+        # Pair valid bars with BKK trading dates
+        bars: list[dict[str, Any]] = []
+        for ts, op, cl in zip(timestamps, opens, closes):
+            if cl is None and op is None:
+                continue
+            bar_date = dt.datetime.fromtimestamp(ts, tz=dt.timezone.utc).astimezone(BKK_TZ).date()
+            bars.append({
+                "date": bar_date.isoformat(),
+                "open": round(float(op), 4) if op is not None else None,
+                "close": round(float(cl), 4) if cl is not None else None,
+            })
+
+        if not bars:
+            return {"ok": False, "error": "No OHLC bars"}
+
+        today_str = now_bkk.date().isoformat()
+        hinfo = get_holiday_info(now_bkk.date())
+        is_weekend = hinfo["is_weekend"]
+        is_closed_for_symbol = is_weekend or hinfo["is_global_holiday"] or (symbol == "THB=X" and hinfo["is_th_holiday"])
+        latest_bar = bars[-1]
+        prev_bar = bars[-2] if len(bars) >= 2 else None
+
+        # Check if today's opening price is available on a trading weekday
+        if not is_closed_for_symbol and latest_bar["date"] == today_str and latest_bar["open"] is not None:
+            price = latest_bar["open"]
+            price_basis = "Today Open"
+            obs_date = today_str
+            base_price = prev_bar["close"] if prev_bar and prev_bar["close"] else None
+            base_date = prev_bar["date"] if prev_bar else None
+            market_status = "เปิดซื้อขาย (ใช้ราคาเปิดวันนี้)"
+            quality = "VERIFIED CURRENT"
+        else:
+            # Fallback to Prior Close (last night's close / last business day)
+            # If latest_bar is today without close yet, use prev_bar as prior close
+            target_bar = latest_bar
+            compare_bar = prev_bar
+            if latest_bar["date"] == today_str and (latest_bar["close"] is None or is_closed_for_symbol) and prev_bar:
+                target_bar = prev_bar
+                compare_bar = bars[-3] if len(bars) >= 3 else None
+
+            price = target_bar["close"] if target_bar["close"] is not None else target_bar["open"]
+            price_basis = "Prior Close"
+            obs_date = target_bar["date"]
+            base_price = compare_bar["close"] if compare_bar and compare_bar["close"] else None
+            base_date = compare_bar["date"] if compare_bar else None
+            if hinfo["is_holiday"]:
+                market_status = f"วันหยุดนักขัตฤกษ์ ({hinfo['holiday_name_th']})"
+            elif is_weekend:
+                market_status = "ตลาดปิด (ใช้ราคาปิดล่าสุด)"
+            else:
+                market_status = "ยังไม่เปิด/รอราคาเปิด (ใช้ราคาปิดเมื่อคืน)"
+            quality = "VERIFIED LATEST"
+
+        change_pct = None
+        if price is not None and base_price:
+            change_pct = round(((price - base_price) / base_price) * 100.0, 2)
+
+        return {
+            "ok": True,
+            "price": round(float(price), 2) if price is not None else None,
+            "raw_price": price,
+            "price_basis": price_basis,
+            "observation_date": obs_date,
+            "change_pct": change_pct,
+            "base_price": round(float(base_price), 2) if base_price else None,
+            "base_date": base_date,
+            "market_status": market_status,
+            "data_quality": quality,
+            "exchange": meta.get("exchangeName", ""),
+        }
+    except Exception as exc:
+        return {"ok": False, "error": f"Parse error: {exc}"}
+
+
+def fetch_westmetall_aluminium(now_bkk: dt.datetime) -> dict[str, Any]:
+    """
+    Parses Westmetall LME Aluminium Cash-Settlement, 3-Month, and Stock table.
+    At 08:00 ICT (01:00 UTC), LME London ring is closed, so Prior Close is standard.
+    """
+    url = "https://www.westmetall.com/en/markdaten.php?action=table&field=LME_Al_cash"
+    html = http_get(url)
+    if not html:
+        return {"ok": False, "error": "Westmetall unreachable"}
+
+    # Match rows like: <td>20. November 2026</td><td>3,184.50</td><td>2,831.50</td><td>223,525</td>
+    pattern = re.compile(
+        r"<td[^>]*>\s*(\d{1,2}\.\s*[A-Za-z]+\s+\d{4})\s*</td>\s*"
+        r"<td[^>]*>\s*([\d,\.]+)\s*</td>\s*"
+        r"<td[^>]*>\s*([\d,\.]+)\s*</td>\s*"
+        r"<td[^>]*>\s*([\d,\.]+)\s*</td>",
+        re.IGNORECASE,
+    )
+    rows: list[dict[str, Any]] = []
+    for m in pattern.finditer(html):
+        date_str, cash_s, m3_s, stock_s = m.groups()
+        try:
+            d_obj = dt.datetime.strptime(date_str.strip(), "%d. %B %Y").date()
+            rows.append({
+                "d": d_obj.isoformat(),
+                "cash": float(cash_s.replace(",", "")),
+                "m3": float(m3_s.replace(",", "")),
+                "stock": int(float(stock_s.replace(",", ""))),
+            })
+        except ValueError:
+            continue
+
+    if not rows:
+        return {"ok": False, "error": "Westmetall rows not found"}
+
+    rows.sort(key=lambda x: x["d"])
+    latest = rows[-1]
+    prev = rows[-2] if len(rows) >= 2 else None
+    change_pct = None
+    if prev and prev["cash"]:
+        change_pct = round(((latest["cash"] - prev["cash"]) / prev["cash"]) * 100.0, 2)
+
+    is_weekend = now_bkk.weekday() >= 5
+    return {
+        "ok": True,
+        "price": round(latest["cash"], 2),
+        "m3_price": round(latest["m3"], 2),
+        "stock": latest["stock"],
+        "price_basis": "Prior Close",
+        "price_type": "LME Official Cash-Settlement",
+        "observation_date": latest["d"],
+        "change_pct": change_pct,
+        "base_price": round(prev["cash"], 2) if prev else None,
+        "base_date": prev["d"] if prev else None,
+        "market_status": "ตลาดปิด (LME เปิดช่วงบ่ายเวลาไทย ใช้ราคา Settlement ล่าสุด)",
+        "data_quality": "VERIFIED LATEST" if is_weekend or latest["d"] != now_bkk.date().isoformat() else "VERIFIED CURRENT",
+        "series_60d": rows[-45:],  # ~60 calendar days of trading days
+        "source_url": url,
+    }
+
+
+def _parse_pr_table(html: str) -> list[dict[str, Any]]:
+    """Extracts (country, incoterm, price_usd, month_str, date_obj) rows from Procurement Resource HTML."""
+    txt = re.sub(r"<[^>]+>", " ", html)
+    txt = re.sub(r"\s+", " ", txt)
+    pattern = re.compile(
+        r"China\s+FOB\s+USD\s*([\d,]+(?:\.\d{1,2})?)\s*/\s*MT\s+([A-Za-z]+\s+\d{4})",
+        re.IGNORECASE,
+    )
+    rows: list[dict[str, Any]] = []
+    for m in pattern.finditer(txt):
+        price_s, period_s = m.groups()
+        try:
+            period_dt = dt.datetime.strptime(period_s.strip(), "%B %Y").date()
+            rows.append({
+                "price": round(float(price_s.replace(",", "")), 2),
+                "period": period_s.strip(),
+                "period_date": period_dt,
+            })
+        except ValueError:
+            continue
+    rows.sort(key=lambda r: r["period_date"], reverse=True)
+    return rows
+
+
+def check_soda_ash(now_bkk: dt.datetime, force: bool = False) -> dict[str, Any]:
+    """
+    Uses monthly cache to avoid redundant scraping/token usage.
+    Follows SODA ASH FIXED BENCHMARK & MONTHLY FALLBACK:
+    - Primary: Procurement Resource Dense & General FOB China USD/MT.
+    - Prefer Dense if periods are equal; select General if NEWER with MARKET PROXY label.
+    """
+    cache: dict[str, Any] = {}
+    if SODA_CACHE_PATH.exists():
+        cache = json.loads(SODA_CACHE_PATH.read_text(encoding="utf-8"))
+
+    last_checked_str = cache.get("last_checked_utc")
+    interval = int(cache.get("recheck_interval_days", 7))
+    if not force and last_checked_str and cache.get("verified_price_usd_mt") is not None:
+        try:
+            last_dt = dt.datetime.fromisoformat(last_checked_str.replace("Z", "+00:00"))
+            age_days = (now_bkk.astimezone(dt.timezone.utc) - last_dt).days
+            if age_days < interval:
+                return cache
+        except ValueError:
+            pass
+
+    dense_url = "https://www.procurementresource.com/resource-center/soda-ash-dense-price-trends"
+    gen_url = "https://www.procurementresource.com/resource-center/soda-ash-price-trends"
+
+    dense_rows = _parse_pr_table(http_get(dense_url) or "")
+    gen_rows = _parse_pr_table(http_get(gen_url) or "")
+
+    chosen: dict[str, Any] | None = None
+    chosen_rows: list[dict[str, Any]] = []
+    chosen_url = dense_url
+    grade_label = "Dense"
+
+    if dense_rows and gen_rows:
+        if gen_rows[0]["period_date"] > dense_rows[0]["period_date"]:
+            chosen = gen_rows[0]
+            chosen_rows = gen_rows
+            chosen_url = gen_url
+            grade_label = "GENERAL GRADE — DENSE NOT CONFIRMED (MARKET PROXY)"
+        else:
+            chosen = dense_rows[0]
+            chosen_rows = dense_rows
+            chosen_url = dense_url
+            grade_label = "Dense"
+    elif dense_rows:
+        chosen = dense_rows[0]
+        chosen_rows = dense_rows
+        chosen_url = dense_url
+        grade_label = "Dense"
+    elif gen_rows:
+        chosen = gen_rows[0]
+        chosen_rows = gen_rows
+        chosen_url = gen_url
+        grade_label = "GENERAL GRADE — DENSE NOT CONFIRMED (MARKET PROXY)"
+
+    if chosen:
+        age_days = (now_bkk.date() - chosen["period_date"]).days
+        if age_days <= 185:
+            mom_pct = None
+            prev_period = None
+            prev_price = None
+            if len(chosen_rows) >= 2 and chosen_rows[1]["price"]:
+                prev_price = chosen_rows[1]["price"]
+                prev_period = chosen_rows[1]["period"]
+                mom_pct = round(((chosen["price"] - prev_price) / prev_price) * 100.0, 2)
+
+            freshness = "HISTORICAL REFERENCE" if age_days > 90 else "LATEST PUBLISHED MONTHLY BENCHMARK"
+            cache.update({
+                "last_checked_utc": now_bkk.astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "status": "HISTORICAL REFERENCE" if age_days > 90 else "VERIFIED LATEST",
+                "freshness_status": freshness,
+                "verified_price_usd_mt": chosen["price"],
+                "grade": grade_label,
+                "observation_period": chosen["period"],
+                "mom_pct": mom_pct,
+                "prev_period": prev_period,
+                "prev_price": prev_price,
+                "dense_latest": f"{dense_rows[0]['period']}: {dense_rows[0]['price']:.2f} USD/MT" if dense_rows else None,
+                "source_url": chosen_url,
+            })
+            SODA_CACHE_PATH.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
+            return cache
+
+    cache["last_checked_utc"] = now_bkk.astimezone(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    cache["status"] = "UNAVAILABLE"
+    SODA_CACHE_PATH.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
+    return cache
+
+
+def fetch_rss_headlines(limit_per_feed: int = 4) -> list[dict[str, str]]:
+    """
+    Pulls compact headline metadata (title, link, pubDate) without downloading full article bodies
+    to keep token usage tiny during scheduled runs.
+    """
+    feeds = [
+        ("AL Circle", "https://www.alcircle.com/rss/news"),
+        ("Google News — Thailand Baht / Economy", "https://news.google.com/rss/search?q=Thailand+baht+OR+BOT+OR+construction+when:3d&hl=en-US&gl=US&ceid=US:en"),
+        ("Google News — Brent Oil / Freight", "https://news.google.com/rss/search?q=Brent+crude+oil+OR+Drewry+container+freight+when:3d&hl=en-US&gl=US&ceid=US:en"),
+    ]
+    items: list[dict[str, str]] = []
+    for source_label, feed_url in feeds:
+        xml_text = http_get(feed_url, timeout=10)
+        if not xml_text:
+            continue
+        try:
+            root = ET.fromstring(xml_text)
+            count = 0
+            for item in root.findall(".//item"):
+                title = (item.findtext("title") or "").strip()
+                link = (item.findtext("link") or "").strip()
+                pub = (item.findtext("pubDate") or "").strip()
+                if title and link:
+                    items.append({
+                        "source": source_label,
+                        "title": title,
+                        "url": link,
+                        "published_at": pub,
+                    })
+                    count += 1
+                    if count >= limit_per_feed:
+                        break
+        except ET.ParseError:
+            continue
+    return items
+
+
+def build_raw_payload(now_bkk: dt.datetime, force_soda: bool = False) -> dict[str, Any]:
+    usd_thb = fetch_yahoo_quote("THB=X", now_bkk)
+    brent = fetch_yahoo_quote("BZ=F", now_bkk)
+    lme = fetch_westmetall_aluminium(now_bkk)
+    soda = check_soda_ash(now_bkk, force=force_soda)
+    headlines = fetch_rss_headlines()
+    hinfo = get_holiday_info(now_bkk.date())
+
+    return {
+        "generated_at_bkk": now_bkk.strftime("%Y-%m-%d %H:%M ICT (UTC+7)"),
+        "date": now_bkk.date().isoformat(),
+        "is_weekend": hinfo["is_weekend"],
+        "is_holiday": hinfo["is_holiday"],
+        "holiday_name_th": hinfo["holiday_name_th"],
+        "short_status_th": hinfo["short_status_th"],
+        "price_rule": "08:00 UTC+7: Today Open if available & market open; else Prior Close",
+        "kpis_raw": {
+            "usd_thb": usd_thb,
+            "brent_oil": brent,
+            "lme_aluminium": lme,
+            "soda_ash": soda,
+        },
+        "news_headlines": headlines,
+    }
+
+
+def create_incremental_snapshot(raw_payload: dict[str, Any], now_bkk: dt.datetime) -> Path:
+    """
+    Creates today's compact snapshot by cloning structure from the latest existing snapshot
+    and updating verified KPI prices + timestamps (0 LLM tokens mode).
+    """
+    HISTORY_DIR.mkdir(parents=True, exist_ok=True)
+    today_str = now_bkk.date().isoformat()
+    target_path = HISTORY_DIR / f"{today_str}.json"
+
+    # Read ONLY the single most recent snapshot (token/IO efficient!)
+    existing_files = sorted(HISTORY_DIR.glob("*.json"))
+    template: dict[str, Any] = {}
+    if existing_files:
+        template = json.loads(existing_files[-1].read_text(encoding="utf-8"))
+
+    thai_months = [
+        "", "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.",
+        "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค.",
+    ]
+    thai_months_full = [
+        "", "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+        "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม",
+    ]
+    weekdays_th = ["จ.", "อ.", "พ.", "พฤ.", "ศ.", "ส.", "อา."]
+    wd = weekdays_th[now_bkk.weekday()]
+    d_disp = f"{now_bkk.day} {thai_months[now_bkk.month]} {now_bkk.year} ({wd})"
+    m_key = now_bkk.strftime("%Y-%m")
+    m_label = f"{thai_months_full[now_bkk.month]} {now_bkk.year}"
+
+    en_month_to_th = {
+        "January": "ม.ค.", "February": "ก.พ.", "March": "มี.ค.", "April": "เม.ย.",
+        "May": "พ.ค.", "June": "มิ.ย.", "July": "ก.ค.", "August": "ส.ค.",
+        "September": "ก.ย.", "October": "ต.ค.", "November": "พ.ย.", "December": "ธ.ค.",
+    }
+
+    def format_price_badge_th(price_basis: str, obs_date: str) -> str:
+        prefix = "ราคาเปิด ณ" if price_basis == "Today Open" else ("ราคาปิด ณ" if price_basis == "Prior Close" else "ดัชนี ณ")
+        if obs_date and len(obs_date) == 10 and obs_date[4] == "-" and obs_date[7] == "-":
+            try:
+                y, m, d = obs_date.split("-")
+                return f"{prefix} {int(d)} {thai_months[int(m)]} {y}"
+            except (ValueError, IndexError):
+                pass
+        parts = obs_date.split() if obs_date else []
+        if len(parts) == 2 and parts[0] in en_month_to_th:
+            return f"{prefix} {en_month_to_th[parts[0]]} {parts[1]}"
+        return f"{prefix} {obs_date}".strip()
+
+    kraw = raw_payload["kpis_raw"]
+    updated_kpis = []
+    for kpi in template.get("kpis", []):
+        kid = kpi["id"]
+        new_k = dict(kpi)
+        if kid == "usd_thb" and kraw["usd_thb"].get("ok"):
+            r = kraw["usd_thb"]
+            new_k["price"] = r["price"]
+            new_k["price_display"] = f"{r['price']:.2f}"
+            new_k["price_basis"] = r["price_basis"]
+            new_k["observation_date"] = r["observation_date"]
+            new_k["price_badge_th"] = format_price_badge_th(r["price_basis"], r["observation_date"])
+            new_k["market_status"] = r["market_status"]
+            new_k["data_quality"] = r["data_quality"]
+            if r["change_pct"] is not None:
+                sign = "+" if r["change_pct"] > 0 else ""
+                new_k["change_pct"] = r["change_pct"]
+                new_k["change_display"] = f"{sign}{r['change_pct']:.2f}% DoD"
+                new_k["comparison_base"] = f"เทียบราคาปิด {r['base_date']} ({r['base_price']:.2f})"
+        elif kid == "brent_oil" and kraw["brent_oil"].get("ok"):
+            r = kraw["brent_oil"]
+            new_k["price"] = r["price"]
+            new_k["price_display"] = f"{r['price']:.2f}"
+            new_k["price_basis"] = r["price_basis"]
+            new_k["observation_date"] = r["observation_date"]
+            new_k["price_badge_th"] = format_price_badge_th(r["price_basis"], r["observation_date"])
+            new_k["market_status"] = r["market_status"]
+            new_k["data_quality"] = r["data_quality"]
+            if r["change_pct"] is not None:
+                sign = "+" if r["change_pct"] > 0 else ""
+                new_k["change_pct"] = r["change_pct"]
+                new_k["change_display"] = f"{sign}{r['change_pct']:.2f}% DoD"
+                new_k["comparison_base"] = f"เทียบราคาปิด {r['base_date']} ({r['base_price']:.2f})"
+        elif kid == "lme_aluminium" and kraw["lme_aluminium"].get("ok"):
+            r = kraw["lme_aluminium"]
+            new_k["price"] = r["price"]
+            new_k["price_display"] = f"{r['price']:,.2f}"
+            new_k["price_precision_note"] = f"3M: {r['m3_price']:,.2f} USD/t | Stock: {r['stock']:,} t"
+            new_k["price_basis"] = r["price_basis"]
+            new_k["observation_date"] = r["observation_date"]
+            new_k["price_badge_th"] = format_price_badge_th(r["price_basis"], r["observation_date"])
+            new_k["market_status"] = r["market_status"]
+            new_k["data_quality"] = r["data_quality"]
+            if r["change_pct"] is not None:
+                sign = "+" if r["change_pct"] > 0 else ""
+                new_k["change_pct"] = r["change_pct"]
+                new_k["change_display"] = f"{sign}{r['change_pct']:.2f}% DoD"
+                new_k["comparison_base"] = f"เทียบ Cash {r['base_date']} ({r['base_price']:,.2f} USD/t)"
+        elif kid == "soda_ash":
+            s = kraw["soda_ash"]
+            if s.get("status") in ("VERIFIED LATEST", "VERIFIED CURRENT", "HISTORICAL REFERENCE") and s.get("verified_price_usd_mt"):
+                new_k["price"] = s["verified_price_usd_mt"]
+                new_k["price_display"] = f"{s['verified_price_usd_mt']:.2f}"
+                dense_note = f" (Dense ล่าสุด {s['dense_latest']})" if s.get("dense_latest") and "GENERAL" in s.get("grade", "") else ""
+                grade_short = "General Market Proxy" if "GENERAL" in s.get("grade", "") else "Dense FOB China"
+                new_k["price_precision_note"] = f"{grade_short}{dense_note}"
+                new_k["observation_date"] = s.get("observation_period") or today_str
+                new_k["price_badge_th"] = format_price_badge_th("Monthly Benchmark", new_k["observation_date"])
+                new_k["market_status"] = s.get("freshness_status") or "รายเดือนล่าสุด"
+                new_k["data_quality"] = s["status"]
+                new_k["source_name"] = "Procurement Resource"
+                new_k["source_url"] = s.get("source_url", new_k["source_url"])
+                if s.get("mom_pct") is not None:
+                    sign = "+" if s["mom_pct"] > 0 else ""
+                    new_k["change_pct"] = s["mom_pct"]
+                    new_k["change_display"] = f"{sign}{s['mom_pct']:.2f}% MoM"
+                    new_k["comparison_base"] = f"เทียบ {s.get('prev_period')} ({s.get('prev_price'):.2f} USD/MT)"
+                else:
+                    new_k["change_pct"] = None
+                    new_k["change_display"] = "MoM: N/A"
+                    new_k["comparison_base"] = "MoM: N/A"
+        updated_kpis.append(new_k)
+
+    # Refresh headlines if new ones came in (without fabricating analysis)
+    news_list = template.get("news", [])
+    if raw_payload.get("news_headlines") and not target_path.exists():
+        # Keep existing verified items + prepend newly fetched headlines marked for review if distinct
+        existing_urls = {n.get("source_url") for n in news_list}
+        fresh_items = []
+        for idx, h in enumerate(raw_payload["news_headlines"][:4], start=1):
+            if h["url"] not in existing_urls:
+                fresh_items.append({
+                    "id": f"auto-{today_str}-{idx}",
+                    "tier": "watchlist",
+                    "title": h["title"],
+                    "priority_tier": "FX, Energy, Raw Materials, Industry Demand",
+                    "company": "ALL",
+                    "published_at": h.get("published_at") or today_str,
+                    "what": f"หัวข้อข่าวล่าสุดจาก {h['source']}: {h['title']}",
+                    "so_what": "ติดตามผลกระทบต่อ KBI และ BGA ตามตัวขับเคลื่อนต้นทุน/อุปสงค์ (Automated Feed)",
+                    "financial": "ประเมินผลกระทบต่อ Margin และ Cash Flow เทียบกับราคา KPI ล่าสุด (รอข้อมูลภายในบริษัท)",
+                    "now_what": "เปิดลิงก์ต้นทางเพื่อตรวจสอบรายละเอียดเพิ่มเติมก่อนตัดสินใจเชิงพาณิชย์",
+                    "owner": "ผู้บริหาร / ฝ่ายจัดซื้อ",
+                    "source_name": h["source"],
+                    "source_url": h["url"],
+                })
+        if fresh_items:
+            news_list = (fresh_items + news_list)[:10]
+
+    hinfo = get_holiday_info(now_bkk.date())
+    if hinfo["is_holiday"]:
+        overall_status = f"วันหยุดนักขัตฤกษ์ ({hinfo['holiday_name_th']}) • อ้างอิงราคาปิดวันทำการล่าสุด"
+    elif hinfo["is_weekend"]:
+        overall_status = "ตลาดปิด (วันหยุดสุดสัปดาห์) • อ้างอิงราคาปิดวันทำการล่าสุด"
+    else:
+        overall_status = "วันทำการ • อัปเดตรอบเช้า 08:00 ICT"
+
+    snapshot = {
+        "date": today_str,
+        "display_date_th": d_disp,
+        "month_key": m_key,
+        "month_label_th": m_label,
+        "report_time_bkk": now_bkk.strftime("%Y-%m-%d %H:%M ICT (UTC+7)"),
+        "scheduled_slot_bkk": "08:00 ICT (UTC+7)",
+        "is_weekend": hinfo["is_weekend"],
+        "is_holiday": hinfo["is_holiday"],
+        "holiday_name_th": hinfo["holiday_name_th"],
+        "short_status_th": hinfo["short_status_th"],
+        "market_status_overall": overall_status,
+        "price_rule_note": "",
+        "kpis": updated_kpis,
+        "soda_ash_supplementary_context": template.get("soda_ash_supplementary_context", []),
+        "decision_cards": template.get("decision_cards", []),
+        "executive_3rows": template.get("executive_3rows", []),
+        "lme_60d_series": kraw["lme_aluminium"].get("series_60d") or template.get("lme_60d_series", []),
+        "news": news_list,
+        "impact_matrix": template.get("impact_matrix", []),
+        "management_actions": template.get("management_actions", []),
+    }
+
+    target_path.write_text(json.dumps(snapshot, ensure_ascii=False, indent=2), encoding="utf-8")
+    return target_path
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Fetch BGF market KPIs & headlines.")
+    parser.add_argument("--force-soda", action="store_true", help="Force re-checking Soda Ash source.")
+    parser.add_argument(
+        "--create-snapshot",
+        action="store_true",
+        help="Write today's incremental JSON snapshot directly (0 LLM tokens).",
+    )
+    args = parser.parse_args()
+
+    now_bkk = dt.datetime.now(BKK_TZ)
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    payload = build_raw_payload(now_bkk, force_soda=args.force_soda)
+    TODAY_RAW_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"[OK] Wrote {TODAY_RAW_PATH}")
+
+    if args.create_snapshot:
+        snap = create_incremental_snapshot(payload, now_bkk)
+        print(f"[OK] Wrote snapshot {snap}")
+
+
+if __name__ == "__main__":
+    main()

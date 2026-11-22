@@ -1,0 +1,16 @@
+{
+  "last_checked_utc": "2026-11-21T15:51:43Z",
+  "benchmark": "FOB China USD/MT (Dense Preferred, General Proxy Permitted)",
+  "status": "VERIFIED LATEST",
+  "verified_price_usd_mt": 156.23,
+  "grade": "GENERAL GRADE — DENSE NOT CONFIRMED (MARKET PROXY)",
+  "observation_period": "October 2026",
+  "source_url": "https://www.procurementresource.com/resource-center/soda-ash-price-trends",
+  "notes": "Procurement Resource & Intratec blocked automated inspection; search snippets are never treated as verified. Regional proxies (East China domestic RMB 1,150/MT, CFR Tokyo USD 212.33/MT, Indonesia USD 259/MT) are stored in supplementary context only.",
+  "recheck_interval_days": 7,
+  "freshness_status": "LATEST PUBLISHED MONTHLY BENCHMARK",
+  "mom_pct": 0.0,
+  "prev_period": "September 2026",
+  "prev_price": 156.23,
+  "dense_latest": "August 2026: 161.00 USD/MT"
+}

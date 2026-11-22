@@ -1,0 +1,387 @@
+{
+  "generated_at_bkk": "2026-11-21 22:51 ICT (UTC+7)",
+  "date": "2026-11-21",
+  "is_weekend": true,
+  "price_rule": "08:00 UTC+7: Today Open if available & market open; else Prior Close",
+  "kpis_raw": {
+    "usd_thb": {
+      "ok": true,
+      "price": 33.94,
+      "raw_price": 33.942,
+      "price_basis": "Prior Close",
+      "observation_date": "2026-11-20",
+      "change_pct": -0.0,
+      "base_price": 33.94,
+      "base_date": "2026-11-19",
+      "market_status": "ตลาดปิด (ใช้ราคาปิดล่าสุด)",
+      "data_quality": "VERIFIED LATEST",
+      "exchange": "CCY"
+    },
+    "brent_oil": {
+      "ok": true,
+      "price": 92.57,
+      "raw_price": 92.57,
+      "price_basis": "Prior Close",
+      "observation_date": "2026-11-20",
+      "change_pct": 0.64,
+      "base_price": 91.98,
+      "base_date": "2026-11-19",
+      "market_status": "ตลาดปิด (ใช้ราคาปิดล่าสุด)",
+      "data_quality": "VERIFIED LATEST",
+      "exchange": "NYM"
+    },
+    "lme_aluminium": {
+      "ok": true,
+      "price": 3184.5,
+      "m3_price": 2831.5,
+      "stock": 223525,
+      "price_basis": "Prior Close",
+      "price_type": "LME Official Cash-Settlement",
+      "observation_date": "2026-11-20",
+      "change_pct": 2.56,
+      "base_price": 3105.0,
+      "base_date": "2026-11-19",
+      "market_status": "ตลาดปิด (LME เปิดช่วงบ่ายเวลาไทย ใช้ราคา Settlement ล่าสุด)",
+      "data_quality": "VERIFIED LATEST",
+      "series_60d": [
+        {
+          "d": "2026-09-21",
+          "cash": 3262.5,
+          "m3": 3273.0,
+          "stock": 242200
+        },
+        {
+          "d": "2026-09-22",
+          "cash": 3242.0,
+          "m3": 3264.0,
+          "stock": 242125
+        },
+        {
+          "d": "2026-09-23",
+          "cash": 3240.0,
+          "m3": 3260.0,
+          "stock": 241375
+        },
+        {
+          "d": "2026-09-24",
+          "cash": 3228.0,
+          "m3": 3252.5,
+          "stock": 241375
+        },
+        {
+          "d": "2026-09-25",
+          "cash": 3254.0,
+          "m3": 3267.0,
+          "stock": 241375
+        },
+        {
+          "d": "2026-09-28",
+          "cash": 3248.5,
+          "m3": 3252.0,
+          "stock": 241375
+        },
+        {
+          "d": "2026-09-29",
+          "cash": 3225.5,
+          "m3": 3232.0,
+          "stock": 241375
+        },
+        {
+          "d": "2026-09-30",
+          "cash": 3204.0,
+          "m3": 3210.0,
+          "stock": 241375
+        },
+        {
+          "d": "2026-10-01",
+          "cash": 3120.0,
+          "m3": 3131.0,
+          "stock": 240625
+        },
+        {
+          "d": "2026-10-02",
+          "cash": 3109.5,
+          "m3": 3122.0,
+          "stock": 240375
+        },
+        {
+          "d": "2026-10-05",
+          "cash": 3107.0,
+          "m3": 3118.0,
+          "stock": 240375
+        },
+        {
+          "d": "2026-10-06",
+          "cash": 3134.5,
+          "m3": 3148.5,
+          "stock": 238875
+        },
+        {
+          "d": "2026-10-07",
+          "cash": 3102.5,
+          "m3": 3114.0,
+          "stock": 238875
+        },
+        {
+          "d": "2026-10-08",
+          "cash": 3060.5,
+          "m3": 3069.0,
+          "stock": 238875
+        },
+        {
+          "d": "2026-10-09",
+          "cash": 3055.5,
+          "m3": 3070.0,
+          "stock": 238875
+        },
+        {
+          "d": "2026-10-12",
+          "cash": 3055.0,
+          "m3": 3060.0,
+          "stock": 238625
+        },
+        {
+          "d": "2026-10-13",
+          "cash": 3036.0,
+          "m3": 3037.0,
+          "stock": 238625
+        },
+        {
+          "d": "2026-10-14",
+          "cash": 3010.0,
+          "m3": 3013.5,
+          "stock": 238375
+        },
+        {
+          "d": "2026-10-15",
+          "cash": 2999.0,
+          "m3": 2994.5,
+          "stock": 238125
+        },
+        {
+          "d": "2026-10-16",
+          "cash": 3014.0,
+          "m3": 3012.0,
+          "stock": 237875
+        },
+        {
+          "d": "2026-10-19",
+          "cash": 3019.0,
+          "m3": 3012.0,
+          "stock": 236375
+        },
+        {
+          "d": "2026-10-20",
+          "cash": 3003.5,
+          "m3": 2997.0,
+          "stock": 236225
+        },
+        {
+          "d": "2026-10-21",
+          "cash": 3031.0,
+          "m3": 3024.5,
+          "stock": 236125
+        },
+        {
+          "d": "2026-10-22",
+          "cash": 3033.0,
+          "m3": 3008.0,
+          "stock": 236025
+        },
+        {
+          "d": "2026-10-23",
+          "cash": 3043.0,
+          "m3": 3018.0,
+          "stock": 235800
+        },
+        {
+          "d": "2026-10-26",
+          "cash": 3047.5,
+          "m3": 3027.0,
+          "stock": 234050
+        },
+        {
+          "d": "2026-10-27",
+          "cash": 3078.0,
+          "m3": 3064.0,
+          "stock": 232100
+        },
+        {
+          "d": "2026-10-28",
+          "cash": 3101.0,
+          "m3": 3084.0,
+          "stock": 231900
+        },
+        {
+          "d": "2026-10-29",
+          "cash": 3071.0,
+          "m3": 3064.0,
+          "stock": 231675
+        },
+        {
+          "d": "2026-10-30",
+          "cash": 3114.0,
+          "m3": 3080.0,
+          "stock": 231200
+        },
+        {
+          "d": "2026-11-02",
+          "cash": 3095.0,
+          "m3": 3060.0,
+          "stock": 230775
+        },
+        {
+          "d": "2026-11-03",
+          "cash": 3082.0,
+          "m3": 3042.0,
+          "stock": 229475
+        },
+        {
+          "d": "2026-11-04",
+          "cash": 3135.0,
+          "m3": 3074.0,
+          "stock": 228750
+        },
+        {
+          "d": "2026-11-05",
+          "cash": 3160.0,
+          "m3": 3097.5,
+          "stock": 228475
+        },
+        {
+          "d": "2026-11-06",
+          "cash": 3117.0,
+          "m3": 3050.0,
+          "stock": 227600
+        },
+        {
+          "d": "2026-11-09",
+          "cash": 3147.0,
+          "m3": 3059.5,
+          "stock": 226975
+        },
+        {
+          "d": "2026-11-10",
+          "cash": 3137.0,
+          "m3": 3027.0,
+          "stock": 226850
+        },
+        {
+          "d": "2026-11-11",
+          "cash": 3223.5,
+          "m3": 3064.0,
+          "stock": 226725
+        },
+        {
+          "d": "2026-11-12",
+          "cash": 3155.5,
+          "m3": 3032.0,
+          "stock": 226350
+        },
+        {
+          "d": "2026-11-13",
+          "cash": 3150.5,
+          "m3": 3018.0,
+          "stock": 224150
+        },
+        {
+          "d": "2026-11-16",
+          "cash": 3332.0,
+          "m3": 3020.0,
+          "stock": 221900
+        },
+        {
+          "d": "2026-11-17",
+          "cash": 3060.5,
+          "m3": 2940.0,
+          "stock": 220350
+        },
+        {
+          "d": "2026-11-18",
+          "cash": 3095.0,
+          "m3": 2865.0,
+          "stock": 226150
+        },
+        {
+          "d": "2026-11-19",
+          "cash": 3105.0,
+          "m3": 2845.0,
+          "stock": 224425
+        },
+        {
+          "d": "2026-11-20",
+          "cash": 3184.5,
+          "m3": 2831.5,
+          "stock": 223525
+        }
+      ],
+      "source_url": "https://www.westmetall.com/en/markdaten.php?action=table&field=LME_Al_cash"
+    },
+    "soda_ash": {
+      "last_checked_utc": "2026-11-21T15:51:43Z",
+      "benchmark": "FOB China USD/MT (Dense Preferred, General Proxy Permitted)",
+      "status": "VERIFIED LATEST",
+      "verified_price_usd_mt": 156.23,
+      "grade": "GENERAL GRADE — DENSE NOT CONFIRMED (MARKET PROXY)",
+      "observation_period": "October 2026",
+      "source_url": "https://www.procurementresource.com/resource-center/soda-ash-price-trends",
+      "notes": "Procurement Resource & Intratec blocked automated inspection; search snippets are never treated as verified. Regional proxies (East China domestic RMB 1,150/MT, CFR Tokyo USD 212.33/MT, Indonesia USD 259/MT) are stored in supplementary context only.",
+      "recheck_interval_days": 7,
+      "freshness_status": "LATEST PUBLISHED MONTHLY BENCHMARK",
+      "mom_pct": 0.0,
+      "prev_period": "September 2026",
+      "prev_price": 156.23,
+      "dense_latest": "August 2026: 161.00 USD/MT"
+    }
+  },
+  "news_headlines": [
+    {
+      "source": "Google News — Thailand Baht / Economy",
+      "title": "Thai baht/US dollar steady on Friday - marketscreener.com",
+      "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxNNXJqcVlpb2dTeF92SGl3aHo3SzNWQUZQOU9oWXRVRVBGbWFCb1Y5WXRTSDBMMXBGZ3dBQUJpRWJUbnhkeWdmcXdfN3hzbkd4ejd4bkkxR3NnckdBVEJiY0txNDR4N1VkUExQcXJua0t3WHBJWlc4REo2a2dabHdrUmVqWEJJaVRPMkFnOXBESVc4LTA?oc=5",
+      "published_at": "Fri, 20 Nov 2026 02:18:29 GMT"
+    },
+    {
+      "source": "Google News — Thailand Baht / Economy",
+      "title": "What is HIMARS? Thailand eyes 4-billion-baht rocket system that changed Ukraine’s battlefield - Nation Thailand",
+      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFB2R0FXWUlEeUtTbFE3NnJNbk1YRjFSMmJpWkpIYzU5TThBOXgtVFhNUzM2UThNVGdTYWpvN1p2Tjc2ZXdKOTRmZUFEazdkRGFOZzBwNXdIazFXU0VaM2twQ0tn?oc=5",
+      "published_at": "Fri, 20 Nov 2026 04:11:00 GMT"
+    },
+    {
+      "source": "Google News — Thailand Baht / Economy",
+      "title": "Convert 1000 THB (Thai Baht) to W (Wormhole) - Bybit",
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE81VmVlNDNWcGJCdlZOQjFTanVDZXpzR21wYW9PVldzVUFVOTVvR2dZSFNWeWFvSXdJLTRHMG93ckVreEd3RmNEd2Rid09xNk5sd1hXVlFfQ1k1UUE?oc=5",
+      "published_at": "Thu, 19 Nov 2026 17:59:00 GMT"
+    },
+    {
+      "source": "Google News — Thailand Baht / Economy",
+      "title": "Chinese exec convicted in a Bangkok building collapse - 朝日新聞",
+      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE9EVVg5WG5TbXFKd1BkcjNjSGxNQVNXdHFDVHZrN29jS2t6OUJncnRpQXBtNFpBczZoaDVfYkcycU5ueW05cHZpYkNOaHVDZGlJbmNzYnVR?oc=5",
+      "published_at": "Thu, 19 Nov 2026 03:00:00 GMT"
+    },
+    {
+      "source": "Google News — Brent Oil / Freight",
+      "title": "Brent Last Day Financial Overview - CME Group",
+      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNWGU2ejZ1bGYtNEFGUUVqYVFyaFJ6NGFQWFRxM01tU3kzSWtUNDdSUDRRSnF5SDRORGVBbGZDeWstQUR2SFdkVlBmVlp2eGxwTjJ3NHZhTG41RXJHZGlCMWczZWszTXBadHI5clRjSEJ1WkdOdklQWHNGeTlBdGFFMnNqNndmZw?oc=5",
+      "published_at": "Fri, 20 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "source": "Google News — Brent Oil / Freight",
+      "title": "Banks Hike Oil Price Forecasts on Prolonged Gulf Disruptions - EnergyNow.com",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPNkJCUnJ0UGhBRDNCcWRtN1QzR2h5eEl4TEoxWGVaaVowMXA5NWxtM19jYnA5OUtYanNlZTloLUM2VFZTenhiazU5M1VjWU1vM2JXVTM4bUd6NG9FMnlQMWlDRVpWalJIQTY0V2c0QS1KeWdtQVFHa184aW56NEdGMWdPNi1kLUM5eW1YU0xJLU83ZkFWd1E?oc=5",
+      "published_at": "Fri, 20 Nov 2026 21:39:24 GMT"
+    },
+    {
+      "source": "Google News — Brent Oil / Freight",
+      "title": "Oil settles flat as Hormuz disruptions offset global surplus fears - Reuters",
+      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOMnV0bXBXX1ZzNHpkcHFmanlPQ2FmczM3Z2xCcXRqRjYwTVB6SlFhZ29vbGcyM3V5a3lOMHZ3OXprMDM0ang4RVEwQmhFMTZ2QU1GT2lQN0ZPUXQyZWJ4MHR1S0JQTmE5Y0Z5dkZlemdFU0V6TWFId0pZZlFtbHVzaU1EeVl1S2RiSFdrcE95d1ZqQW9NRWlZUFNHWU9QVHNXRlZiTmEtckdWZEpScFREcVpPQ0x3MDNQeFhiZHJHMUlVQXFRNkE?oc=5",
+      "published_at": "Thu, 19 Nov 2026 21:02:01 GMT"
+    },
+    {
+      "source": "Google News — Brent Oil / Freight",
+      "title": "Oil News: WTI and Brent Steady as Surplus Outlook Meets Shipping Risks - FXEmpire",
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNcDBVaGRuS242Z3VrVEtSalR1dkRjdmtCYXZUR0sxQ2tMVXJWNWJIQmxmUnJjeHN2WkdPQkRCNUg0c1VlTWZZXzVmQmZJN0dhRkxXWGJ2b0l3clB5YlpyYmctTkRMMkZ3S0l4VUw2VjZHZlRtbkFla2ZMRUo5c2hNSmN5Vzh2a255cnJ1TE5OVm9mRjhYczY1eFB4VWN2aHpPR1VHYWM0aDItY3pqa2EtdUt0LUQ0dlNQdWJjUQ?oc=5",
+      "published_at": "Thu, 19 Nov 2026 10:13:55 GMT"
+    }
+  ]
+}
