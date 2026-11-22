@@ -1,34 +1,19 @@
 {
-  "generated_at_bkk": "2026-11-21 22:51 ICT (UTC+7)",
-  "date": "2026-11-21",
+  "generated_at_bkk": "2026-11-22 17:02 ICT (UTC+7)",
+  "date": "2026-11-22",
   "is_weekend": true,
+  "is_holiday": false,
+  "holiday_name_th": "",
+  "short_status_th": "ตลาดปิด",
   "price_rule": "08:00 UTC+7: Today Open if available & market open; else Prior Close",
   "kpis_raw": {
     "usd_thb": {
-      "ok": true,
-      "price": 33.94,
-      "raw_price": 33.942,
-      "price_basis": "Prior Close",
-      "observation_date": "2026-11-20",
-      "change_pct": -0.0,
-      "base_price": 33.94,
-      "base_date": "2026-11-19",
-      "market_status": "ตลาดปิด (ใช้ราคาปิดล่าสุด)",
-      "data_quality": "VERIFIED LATEST",
-      "exchange": "CCY"
+      "ok": false,
+      "error": "Yahoo Finance unreachable"
     },
     "brent_oil": {
-      "ok": true,
-      "price": 92.57,
-      "raw_price": 92.57,
-      "price_basis": "Prior Close",
-      "observation_date": "2026-11-20",
-      "change_pct": 0.64,
-      "base_price": 91.98,
-      "base_date": "2026-11-19",
-      "market_status": "ตลาดปิด (ใช้ราคาปิดล่าสุด)",
-      "data_quality": "VERIFIED LATEST",
-      "exchange": "NYM"
+      "ok": false,
+      "error": "Yahoo Finance unreachable"
     },
     "lme_aluminium": {
       "ok": true,
@@ -334,54 +319,5 @@
       "dense_latest": "August 2026: 161.00 USD/MT"
     }
   },
-  "news_headlines": [
-    {
-      "source": "Google News — Thailand Baht / Economy",
-      "title": "Thai baht/US dollar steady on Friday - marketscreener.com",
-      "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxNNXJqcVlpb2dTeF92SGl3aHo3SzNWQUZQOU9oWXRVRVBGbWFCb1Y5WXRTSDBMMXBGZ3dBQUJpRWJUbnhkeWdmcXdfN3hzbkd4ejd4bkkxR3NnckdBVEJiY0txNDR4N1VkUExQcXJua0t3WHBJWlc4REo2a2dabHdrUmVqWEJJaVRPMkFnOXBESVc4LTA?oc=5",
-      "published_at": "Fri, 20 Nov 2026 02:18:29 GMT"
-    },
-    {
-      "source": "Google News — Thailand Baht / Economy",
-      "title": "What is HIMARS? Thailand eyes 4-billion-baht rocket system that changed Ukraine’s battlefield - Nation Thailand",
-      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFB2R0FXWUlEeUtTbFE3NnJNbk1YRjFSMmJpWkpIYzU5TThBOXgtVFhNUzM2UThNVGdTYWpvN1p2Tjc2ZXdKOTRmZUFEazdkRGFOZzBwNXdIazFXU0VaM2twQ0tn?oc=5",
-      "published_at": "Fri, 20 Nov 2026 04:11:00 GMT"
-    },
-    {
-      "source": "Google News — Thailand Baht / Economy",
-      "title": "Convert 1000 THB (Thai Baht) to W (Wormhole) - Bybit",
-      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE81VmVlNDNWcGJCdlZOQjFTanVDZXpzR21wYW9PVldzVUFVOTVvR2dZSFNWeWFvSXdJLTRHMG93ckVreEd3RmNEd2Rid09xNk5sd1hXVlFfQ1k1UUE?oc=5",
-      "published_at": "Thu, 19 Nov 2026 17:59:00 GMT"
-    },
-    {
-      "source": "Google News — Thailand Baht / Economy",
-      "title": "Chinese exec convicted in a Bangkok building collapse - 朝日新聞",
-      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE9EVVg5WG5TbXFKd1BkcjNjSGxNQVNXdHFDVHZrN29jS2t6OUJncnRpQXBtNFpBczZoaDVfYkcycU5ueW05cHZpYkNOaHVDZGlJbmNzYnVR?oc=5",
-      "published_at": "Thu, 19 Nov 2026 03:00:00 GMT"
-    },
-    {
-      "source": "Google News — Brent Oil / Freight",
-      "title": "Brent Last Day Financial Overview - CME Group",
-      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNWGU2ejZ1bGYtNEFGUUVqYVFyaFJ6NGFQWFRxM01tU3kzSWtUNDdSUDRRSnF5SDRORGVBbGZDeWstQUR2SFdkVlBmVlp2eGxwTjJ3NHZhTG41RXJHZGlCMWczZWszTXBadHI5clRjSEJ1WkdOdklQWHNGeTlBdGFFMnNqNndmZw?oc=5",
-      "published_at": "Fri, 20 Nov 2026 00:00:00 GMT"
-    },
-    {
-      "source": "Google News — Brent Oil / Freight",
-      "title": "Banks Hike Oil Price Forecasts on Prolonged Gulf Disruptions - EnergyNow.com",
-      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPNkJCUnJ0UGhBRDNCcWRtN1QzR2h5eEl4TEoxWGVaaVowMXA5NWxtM19jYnA5OUtYanNlZTloLUM2VFZTenhiazU5M1VjWU1vM2JXVTM4bUd6NG9FMnlQMWlDRVpWalJIQTY0V2c0QS1KeWdtQVFHa184aW56NEdGMWdPNi1kLUM5eW1YU0xJLU83ZkFWd1E?oc=5",
-      "published_at": "Fri, 20 Nov 2026 21:39:24 GMT"
-    },
-    {
-      "source": "Google News — Brent Oil / Freight",
-      "title": "Oil settles flat as Hormuz disruptions offset global surplus fears - Reuters",
-      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOMnV0bXBXX1ZzNHpkcHFmanlPQ2FmczM3Z2xCcXRqRjYwTVB6SlFhZ29vbGcyM3V5a3lOMHZ3OXprMDM0ang4RVEwQmhFMTZ2QU1GT2lQN0ZPUXQyZWJ4MHR1S0JQTmE5Y0Z5dkZlemdFU0V6TWFId0pZZlFtbHVzaU1EeVl1S2RiSFdrcE95d1ZqQW9NRWlZUFNHWU9QVHNXRlZiTmEtckdWZEpScFREcVpPQ0x3MDNQeFhiZHJHMUlVQXFRNkE?oc=5",
-      "published_at": "Thu, 19 Nov 2026 21:02:01 GMT"
-    },
-    {
-      "source": "Google News — Brent Oil / Freight",
-      "title": "Oil News: WTI and Brent Steady as Surplus Outlook Meets Shipping Risks - FXEmpire",
-      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNcDBVaGRuS242Z3VrVEtSalR1dkRjdmtCYXZUR0sxQ2tMVXJWNWJIQmxmUnJjeHN2WkdPQkRCNUg0c1VlTWZZXzVmQmZJN0dhRkxXWGJ2b0l3clB5YlpyYmctTkRMMkZ3S0l4VUw2VjZHZlRtbkFla2ZMRUo5c2hNSmN5Vzh2a255cnJ1TE5OVm9mRjhYczY1eFB4VWN2aHpPR1VHYWM0aDItY3pqa2EtdUt0LUQ0dlNQdWJjUQ?oc=5",
-      "published_at": "Thu, 19 Nov 2026 10:13:55 GMT"
-    }
-  ]
+  "news_headlines": []
 }
