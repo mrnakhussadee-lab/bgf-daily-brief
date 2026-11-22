@@ -1,0 +1,72 @@
+name: BGF Daily Brief — 08:00 ICT Schedule
+
+on:
+  schedule:
+    # 01:00 UTC = 08:00 Asia/Bangkok (UTC+7) every day
+    - cron: "0 1 * * *"
+  workflow_dispatch:
+    inputs:
+      force_soda:
+        description: "Force re-check Soda Ash source"
+        required: false
+        default: "false"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  update-daily-brief:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch market data (0 LLM tokens — Open vs Prior Close rule)
+        run: |
+          if [ "${{ github.event.inputs.force_soda }}" = "true" ]; then
+            python3 scripts/fetch_market_data.py --force-soda --create-snapshot
+          else
+            python3 scripts/fetch_market_data.py --create-snapshot
+          fi
+
+      - name: Build 60-day self-contained HTML / ASPX dashboard
+        run: python3 scripts/build_dashboard.py --retention 60 --prune
+
+      - name: Commit and push updated brief & 60-day archive
+        run: |
+          git config user.name "bgf-brief-bot"
+          git config user.email "bgf-brief-bot@users.noreply.github.com"
+          git add data/ dist/BGF_DAILY_BRIEF.html dist/index.html dist/BGF_DAILY_BRIEF.aspx
+          if ! git diff --staged --quiet; then
+            TZ=Asia/Bangkok git commit -m "chore(brief): update BGF Daily Brief $(date +%Y-%m-%d)"
+            git push
+          else
+            echo "No changes to commit."
+          fi
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy-pages:
+    needs: update-daily-brief
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
