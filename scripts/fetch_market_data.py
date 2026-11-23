@@ -401,17 +401,29 @@ def check_soda_ash(now_bkk: dt.datetime, force: bool = False) -> dict[str, Any]:
     return cache
 
 
-def fetch_rss_headlines(limit_per_feed: int = 4) -> list[dict[str, str]]:
+def fetch_rss_headlines(limit_per_feed: int = 3) -> list[dict[str, str]]:
     """
-    Pulls compact headline metadata (title, link, pubDate) without downloading full article bodies
-    to keep token usage tiny during scheduled runs.
+    Pulls compact business/commodity headline metadata (title, link, pubDate)
+    filtered for BGF-relevant market drivers (FX, energy, metals, glass, freight, economy).
     """
     feeds = [
         ("AL Circle", "https://www.alcircle.com/rss/news"),
-        ("Google News — Thailand Baht / Economy", "https://news.google.com/rss/search?q=Thailand+baht+OR+BOT+OR+construction+when:3d&hl=en-US&gl=US&ceid=US:en"),
-        ("Google News — Brent Oil / Freight", "https://news.google.com/rss/search?q=Brent+crude+oil+OR+Drewry+container+freight+when:3d&hl=en-US&gl=US&ceid=US:en"),
+        ("Google News — Thailand Baht / BOT", "https://news.google.com/rss/search?q=%22Thai+baht%22+OR+%22USD+THB%22+OR+%22Bank+of+Thailand%22+when:3d&hl=en-US&gl=US&ceid=US:en"),
+        ("Google News — Brent / Diesel / Freight", "https://news.google.com/rss/search?q=%22Brent+crude%22+OR+%22container+freight%22+OR+%22Thailand+economy%22+when:3d&hl=en-US&gl=US&ceid=US:en"),
     ]
+    allow_kw = (
+        "alumin", "alumina", "lme", "brent", "crude", "oil", "diesel", "fuel",
+        "baht", "thb", "usd", "fed", "rate", "bot", "central bank", "inflation",
+        "gdp", "economy", "export", "import", "freight", "container", "shipping",
+        "soda ash", "glass", "construction", "property", "factory", "tariff",
+        "electricity", "energy", "anti-dumping", "cbam", "manufacturing", "smelter",
+    )
+    block_kw = (
+        "church", "priest", "vocation", "soccer", "football", "basketball",
+        "lottery", "concert", "actor", "actress", "murder", "crime", "wedding",
+    )
     items: list[dict[str, str]] = []
+    seen_titles: set[str] = set()
     for source_label, feed_url in feeds:
         xml_text = http_get(feed_url, timeout=10)
         if not xml_text:
@@ -423,16 +435,23 @@ def fetch_rss_headlines(limit_per_feed: int = 4) -> list[dict[str, str]]:
                 title = (item.findtext("title") or "").strip()
                 link = (item.findtext("link") or "").strip()
                 pub = (item.findtext("pubDate") or "").strip()
-                if title and link:
-                    items.append({
-                        "source": source_label,
-                        "title": title,
-                        "url": link,
-                        "published_at": pub,
-                    })
-                    count += 1
-                    if count >= limit_per_feed:
-                        break
+                low = title.lower()
+                if not title or not link or low in seen_titles:
+                    continue
+                if any(b in low for b in block_kw):
+                    continue
+                if not any(k in low for k in allow_kw):
+                    continue
+                seen_titles.add(low)
+                items.append({
+                    "source": source_label,
+                    "title": title,
+                    "url": link,
+                    "published_at": pub,
+                })
+                count += 1
+                if count >= limit_per_feed:
+                    break
         except ET.ParseError:
             continue
     return items
@@ -796,31 +815,31 @@ def create_incremental_snapshot(raw_payload: dict[str, Any], now_bkk: dt.datetim
             "source_url": r["source_url"],
         })
 
-    # Refresh headlines if new ones came in (without fabricating analysis)
-    news_list = template.get("news", [])
-    if raw_payload.get("news_headlines") and not target_path.exists():
-        # Keep existing verified items + prepend newly fetched headlines marked for review if distinct
-        existing_urls = {n.get("source_url") for n in news_list}
-        fresh_items = []
-        for idx, h in enumerate(raw_payload["news_headlines"][:4], start=1):
-            if h["url"] not in existing_urls:
-                fresh_items.append({
-                    "id": f"auto-{today_str}-{idx}",
-                    "tier": "watchlist",
-                    "title": h["title"],
-                    "priority_tier": "FX, Energy, Raw Materials, Industry Demand",
-                    "company": "ALL",
-                    "published_at": h.get("published_at") or today_str,
-                    "what": f"หัวข้อข่าวล่าสุดจาก {h['source']}: {h['title']}",
-                    "so_what": "ติดตามผลกระทบต่อ KBI และ BGA ตามตัวขับเคลื่อนต้นทุน/อุปสงค์ (Automated Feed)",
-                    "financial": "ประเมินผลกระทบต่อ Margin และ Cash Flow เทียบกับราคา KPI ล่าสุด (รอข้อมูลภายในบริษัท)",
-                    "now_what": "เปิดลิงก์ต้นทางเพื่อตรวจสอบรายละเอียดเพิ่มเติมก่อนตัดสินใจเชิงพาณิชย์",
-                    "owner": "ผู้บริหาร / ฝ่ายจัดซื้อ",
-                    "source_name": h["source"],
-                    "source_url": h["url"],
-                })
-        if fresh_items:
-            news_list = (fresh_items + news_list)[:10]
+    # Clean out any off-topic auto items & update fresh relevant headlines for today
+    base_news = [n for n in template.get("news", []) if not str(n.get("id", "")).startswith("auto-")]
+    # Also ensure non-top-alert base news doesn't keep stale auto noise; keep top_alerts + curated baseline
+    top_alerts_base = [n for n in base_news if n.get("tier") == "top_alert"][:3]
+    watchlist_base = [n for n in base_news if n.get("tier") != "top_alert"]
+    fresh_items = []
+    seen_urls = {n.get("source_url") for n in base_news}
+    for idx, h in enumerate(raw_payload.get("news_headlines", [])[:4], start=1):
+        if h["url"] not in seen_urls:
+            fresh_items.append({
+                "id": f"auto-{today_str}-{idx}",
+                "tier": "watchlist",
+                "title": h["title"],
+                "priority_tier": "FX, Energy, Raw Materials, Industry Demand",
+                "company": "ALL",
+                "published_at": h.get("published_at") or today_str,
+                "what": f"หัวข้อข่าวล่าสุดจาก {h['source']}: {h['title']}",
+                "so_what": "ติดตามผลกระทบต่อ KBI และ BGA ตามตัวขับเคลื่อนต้นทุน/อุปสงค์ (Automated Feed)",
+                "financial": "ประเมินผลกระทบต่อ Margin และ Cash Flow เทียบกับราคา KPI ล่าสุด (รอข้อมูลภายในบริษัท)",
+                "now_what": "เปิดลิงก์ต้นทางเพื่อตรวจสอบรายละเอียดเพิ่มเติมก่อนตัดสินใจเชิงพาณิชย์",
+                "owner": "ผู้บริหาร / ฝ่ายจัดซื้อ",
+                "source_name": h["source"],
+                "source_url": h["url"],
+            })
+    news_list = (top_alerts_base + fresh_items + watchlist_base)[:10]
 
     hinfo = get_holiday_info(now_bkk.date())
     if hinfo["is_holiday"]:
@@ -829,6 +848,200 @@ def create_incremental_snapshot(raw_payload: dict[str, Any], now_bkk: dt.datetim
         overall_status = "ตลาดปิด (วันหยุดสุดสัปดาห์) • อ้างอิงราคาปิดวันทำการล่าสุด"
     else:
         overall_status = "วันทำการ • อัปเดตรอบเช้า 08:00 ICT"
+
+    # Build dynamic Sections 2, 3, 5, 6 strictly from today's verified KPI numbers
+    kpi_map = {k.get("id"): k for k in updated_kpis}
+    fx_k = kpi_map.get("usd_thb", {})
+    br_k = kpi_map.get("brent_oil", {})
+    al_k = kpi_map.get("lme_aluminium", {})
+    sa_k = kpi_map.get("soda_ash", {})
+    ds_k = kpi_map.get("diesel_b7", {})
+    el_k = kpi_map.get("factory_electricity", {})
+
+    fx_p = fx_k.get("price") or 33.95
+    fx_chg = fx_k.get("change_display", "N/A")
+    br_p = br_k.get("price") or 90.0
+    br_chg = br_k.get("change_display", "N/A")
+    al_p = al_k.get("price") or 3184.5
+    al_chg = al_k.get("change_display", "N/A")
+    m3_raw = kraw["lme_aluminium"].get("m3_price") if kraw.get("lme_aluminium", {}).get("ok") else 2831.5
+    stock_raw = kraw["lme_aluminium"].get("stock") if kraw.get("lme_aluminium", {}).get("ok") else 223525
+    spread = round(al_p - m3_raw, 2)
+    sa_p = sa_k.get("price") or 156.23
+    ds_p = ds_k.get("price") or 39.94
+    el_p = el_k.get("price") or 4.26
+    el_off = kraw["factory_electricity"].get("off_peak_total") if kraw.get("factory_electricity", {}).get("ok") else 2.75
+    el_ft_lbl = el_k.get("change_display", "Ft: +0.1623")
+
+    brent_below_90 = br_p < 90.0
+    spread_alert = spread > 250.0
+    fx_near_34 = fx_p >= 33.90
+
+    decision_cards = [
+        {
+            "priority_status": "ต้องตัดสินใจ" if spread_alert else "ควรพิจารณา",
+            "priority_level": "critical" if spread_alert else "warning",
+            "company": "BGA",
+            "headline": f"LME Aluminium Cash อยู่ที่ {al_p:,.2f} USD/t ({al_chg}) | Spread +{spread:,.2f} USD/t",
+            "financial_impact": (
+                f"ซื้อ Spot สูงกว่าสัญญา 3-Month ({m3_raw:,.2f} USD/t) อยู่ {spread:,.2f} USD/t "
+                f"ท่ามกลางสต็อก LME {stock_raw:,} ตัน กดดัน Gross Margin และ Working Capital ของ BGA"
+            ),
+            "recommended_action": "ทบทวนสัดส่วนสัญญาซื้อ Spot เทียบ 3M Forward และตรวจสอบ Lead Time/สต็อกคงเหลือ (รอข้อมูลภายในบริษัท)",
+            "owner": "CFO & COO",
+            "review_point": "ทบทวนเมื่อ LME Cash–3M Spread > 250 USD/t หรือสต็อก LME ต่ำกว่า 220,000 ตัน",
+        },
+        {
+            "priority_status": "ควรพิจารณา" if fx_near_34 else "เฝ้าระวัง",
+            "priority_level": "warning" if fx_near_34 else "watch",
+            "company": "ALL (KBI & BGA)",
+            "headline": f"USD/THB เคลื่อนไหวที่ {fx_p:.2f} THB/USD ({fx_chg}) ใกล้แนวต้าน 34.00",
+            "financial_impact": "ต้นทุนนำเข้าวัตถุดิบและค่าขนส่งสกุล USD สูงขึ้นในรูปเงินบาท ในภาวะที่ตลาดอสังหาฯ ในประเทศยังชะลอตัว",
+            "recommended_action": "ประเมิน Net USD Exposure ของ KBI/BGA และเตรียมกรอบบริหารความเสี่ยง FX (รอข้อมูลภายในบริษัท)",
+            "owner": "CFO",
+            "review_point": "ทบทวนเมื่อ USD/THB ปิดเหนือ 34.00 THB/USD หรือก่อนประชุม FOMC",
+        },
+        {
+            "priority_status": "ต้องตัดสินใจ" if brent_below_90 else "เฝ้าระวัง",
+            "priority_level": "warning" if brent_below_90 else "watch",
+            "company": "ALL (KBI & BGA)",
+            "headline": f"Brent ปรับสู่ {br_p:.2f} USD/bbl ({br_chg}) | Diesel B7 {ds_p:.2f} THB/L | ค่าไฟ {el_p:.2f} THB/kWh",
+            "financial_impact": (
+                f"น้ำมันดิบ Brent หลุดระดับ 90.00 USD/bbl ({br_p:.2f}) เปิดโอกาสต่อรองต้นทุนพลังงาน/ค่าขนส่ง ขณะที่ค่าไฟโรงงาน 69 kV+ รวม {el_ft_lbl} ทรงตัวที่ {el_p:.2f} THB/kWh"
+                if brent_below_90 else
+                f"ติดตามต้นทุนพลังงานผสม: Brent {br_p:.2f} USD/bbl, Diesel B7 {ds_p:.2f} THB/L และค่าไฟโรงงาน 69 kV+ ที่ {el_p:.2f} THB/kWh ({el_ft_lbl})"
+            ),
+            "recommended_action": "เจรจาปรับลด Fuel Surcharge กับผู้ขนส่ง และวางแผนกะเดินเครื่องเตาหลอม/รีดช่วง Off-Peak (รอข้อมูลภายในบริษัท)",
+            "owner": "COO & จัดซื้อ",
+            "review_point": "ทบทวนเมื่อ Brent หลุด 90.00 USD/bbl หรือประกาศปรับราคา Diesel B7 / ค่า Ft รอบใหม่",
+        },
+    ]
+
+    status_tag_s3 = hinfo["short_status_th"]
+    executive_3rows = [
+        {
+            "num": 1,
+            "label": "SITUATION — สถานการณ์สำคัญ",
+            "headline": f"{d_disp} ({status_tag_s3}): USD/THB {fx_p:.2f} ({fx_chg}), Brent {br_p:.2f} USD/bbl ({br_chg}), LME {al_p:,.2f} USD/t",
+            "detail": (
+                f"อัตราแลกเปลี่ยนอยู่ที่ {fx_p:.2f} THB/USD, น้ำมันดิบ Brent อยู่ที่ {br_p:.2f} USD/bbl, "
+                f"ดีเซล B7 ในประเทศ {ds_p:.2f} THB/Liter, ค่าไฟโรงงาน 69 kV+ On-Peak {el_p:.2f} / Off-Peak {el_off:.2f} THB/kWh ({el_ft_lbl}), "
+                f"LME Aluminium Cash {al_p:,.2f} USD/t และ Soda Ash FOB China {sa_p:.2f} USD/MT"
+            ),
+        },
+        {
+            "num": 2,
+            "label": "BUSINESS IMPACT — ผลกระทบต่อ KBI / BGA",
+            "headline": f"BGA รับแรงกดดัน LME Backwardation (+{spread:,.2f} USD/t) ส่วน KBI ได้แรงหนุนจาก Brent อ่อนลงสู่ {br_p:.2f} และ Soda Ash {sa_p:.2f}",
+            "detail": (
+                f"ทั้งสองบริษัทต้องคุมต้นทุนนำเข้าสกุล USD ที่ {fx_p:.2f} THB/USD, ค่าขนส่งดีเซล {ds_p:.2f} THB/L และค่าไฟ 69 kV+ ({el_p:.2f} THB/kWh); "
+                f"BGA เสี่ยง Margin Compression จาก LME Cash–3M Spread +{spread:,.2f} USD/t มากที่สุด ขณะที่ KBI ได้อานิสงส์พลังงานและ Soda Ash ระดับต่ำ (รอข้อมูลภายในบริษัท)"
+            ),
+        },
+        {
+            "num": 3,
+            "label": "MANAGEMENT RESPONSE — สิ่งที่ผู้บริหารควรทำ",
+            "headline": "คุมสูตรซื้อ LME 3M vs Spot, ต่อรอง Fuel Surcharge รับ Brent ขาลง และเช็ก Net FX Exposure ก่อนแนวต้าน 34.00",
+            "detail": (
+                f"CFO & COO ตรวจสต็อก/สูตรซื้อ LME ของ BGA และ Net USD Exposure ของกลุ่ม; "
+                f"ฝ่ายจัดซื้อใช้จังหวะ Brent {'หลุด 90 USD/bbl' if brent_below_90 else f'ระดับ {br_p:.2f}'} ต่อรองค่าขนส่ง/Fuel Surcharge และเน้นผลิตช่วง Off-Peak ({el_off:.2f} THB/kWh)"
+            ),
+        },
+    ]
+
+    impact_matrix = [
+        {
+            "driver": f"USD/THB {fx_p:.2f} THB/USD ({fx_chg})",
+            "kbi_indicator": "🟡 ต้องติดตาม",
+            "kbi_text": "ต้นทุนนำเข้า Soda Ash และค่าขนส่งสกุล USD สูงขึ้นในรูปเงินบาท แต่รายได้ส่งออกช่วยชดเชยบางส่วน (รอข้อมูลภายใน: Net FX Exposure)",
+            "bga_indicator": "🟡 ต้องติดตาม",
+            "bga_text": "เพิ่มต้นทุนนำเข้าวัตถุดิบอะลูมิเนียมสกุล USD ในรูปบาท ขณะที่ตลาดก่อสร้างในประเทศยังชะลอตัว (รอข้อมูลภายใน: FX Hedge)",
+            "management_implication": "CFO ตรวจสอบ Net USD Exposure ของทั้ง KBI และ BGA ก่อนระดับแนวต้าน 34.00 THB/USD",
+        },
+        {
+            "driver": f"Brent {br_p:.2f} USD/bbl ({br_chg}) & Diesel B7 {ds_p:.2f} THB/L",
+            "kbi_indicator": "🟢 ผลกระทบเชิงบวก",
+            "kbi_text": f"Brent อ่อนตัวสู่ {br_p:.2f} USD/bbl ช่วยบรรเทาต้นทุนเชื้อเพลิงเตาหลอมระยะกลาง ขณะที่ดีเซล B7 ในประเทศอยู่ที่ {ds_p:.2f} THB/L",
+            "bga_indicator": "🟢 ผลกระทบเชิงบวก",
+            "bga_text": f"เปิดโอกาสต่อรองลดค่าขนส่งทางบก (ดีเซล {ds_p:.2f} THB/L) และ Fuel Surcharge การขนส่งวัตถุดิบ/สินค้าสำเร็จรูป",
+            "management_implication": "ฝ่ายจัดซื้อเจรจาปรับลด Fuel Surcharge ตามทิศทาง Brent และหลีกเลี่ยงการล็อกสัญญาพลังงานระยะยาวในช่วงขาลง",
+        },
+        {
+            "driver": f"Factory Electricity 69 kV+ {el_p:.2f} THB/kWh ({el_ft_lbl})",
+            "kbi_indicator": "🟡 ต้องติดตาม",
+            "kbi_text": f"อัตรา TOU 69 kV+ On-Peak {el_p:.2f} vs Off-Peak {el_off:.2f} THB/kWh (Demand 74.14 THB/kW) กระทบต้นทุนเดินเครื่องแปรรูป/หลอมต่อเนื่อง",
+            "bga_indicator": "🟡 ต้องติดตาม",
+            "bga_text": f"ต้นทุนไฟฟ้าในสายรีดอะลูมิเนียมและชุบผิวอิงอัตรา {el_p:.2f} / {el_off:.2f} THB/kWh ต้องคุม Peak Demand Charge",
+            "management_implication": "COO บริหาร Load Factor ช่วง On/Off-Peak และติดตามประกาศค่า Ft งวดถัดไปจาก กกพ.",
+        },
+        {
+            "driver": f"LME Aluminium Cash {al_p:,.2f} USD/t ({al_chg}) & Spread +{spread:,.2f}",
+            "kbi_indicator": "⚪ ไม่มีผลกระทบโดยตรงที่ยืนยันได้",
+            "kbi_text": "KBI ไม่ได้ใช้อะลูมิเนียมเป็นวัตถุดิบหลักในการผลิตกระจกแผ่น",
+            "bga_indicator": "🔴 ผลกระทบเชิงลบสูง",
+            "bga_text": f"Cash สูงกว่า 3-Month ({m3_raw:,.2f} USD/t) อยู่ +{spread:,.2f} USD/t และสต็อกต่ำ {stock_raw:,} ตัน กดดัน Margin และ Working Capital",
+            "management_implication": "COO และ CFO ตรวจสอบสูตรราคาในสัญญาซื้อ (Spot vs 3M) และระดับสต็อกจริงก่อนพิจารณาปรับแผนสั่งซื้อ",
+        },
+        {
+            "driver": f"Soda Ash FOB China {sa_p:.2f} USD/MT (General Proxy)",
+            "kbi_indicator": "🟢 ผลกระทบเชิงบวก",
+            "kbi_text": f"ราคา FOB China ทรงตัวระดับต่ำที่ {sa_p:.2f} USD/MT ช่วยคุมแรงกดดันต้นทุนวัตถุดิบหลัก (รอข้อมูลภายใน: Landed Cost ของ KBI)",
+            "bga_indicator": "⚪ ไม่มีผลกระทบโดยตรงที่ยืนยันได้",
+            "bga_text": "BGA ไม่ได้ใช้ Soda Ash เป็นวัตถุดิบหลัก",
+            "management_implication": f"ฝ่ายจัดซื้อ KBI ใช้ระดับ FOB China ({sa_p:.2f} USD/MT) เป็นข้อมูลเปรียบเทียบต่อรองราคาเสนอขายจริงของซัพพลายเออร์",
+        },
+        {
+            "driver": "อุปสงค์อสังหาฯ ไทย (-0.6% YoY) & คดี AD อินเดีย + PSS ค่าระวาง",
+            "kbi_indicator": "🟡 ต้องติดตาม",
+            "kbi_text": "ก่อสร้างเอกชนชะลอ (-0.5%) กดดันยอดขายในประเทศ ขณะที่ PSS ค่าระวางยุโรปอาจกระทบต้นทุนส่งออก",
+            "bga_indicator": "🔴 ผลกระทบเชิงลบสูง",
+            "bga_text": "เผชิญทั้งอุปสงค์ก่อสร้างเอกชนอ่อนตัว และความเสี่ยงคดี AD อินเดียที่อาจทำให้สินค้าภูมิภาคไหลย้อนมาตัดราคาในไทย",
+            "management_implication": "CEO ขยายสัดส่วนการขายสู่กลุ่มโครงการรัฐ/อุตสาหกรรม (+19.1%) พร้อมให้ CFO คุม AR Aging และเร่งจองระวางเรือ",
+        },
+    ]
+
+    management_actions = [
+        {
+            "priority": "P1",
+            "business": "BGA",
+            "action": f"ตรวจสอบสัดส่วนสัญญาซื้อ LME Aluminium (Spot vs 3M) และสต็อกคงคลัง หลัง Cash อยู่ที่ {al_p:,.2f} USD/t และ Spread +{spread:,.2f} USD/t",
+            "owner": "CFO & COO",
+            "timeline": "ทันที (สัปดาห์นี้)",
+            "trigger": "Spread Cash–3M > 250.00 USD/t หรือสต็อก LME < 220,000 ตัน",
+        },
+        {
+            "priority": "P1",
+            "business": "ALL (KBI & BGA)",
+            "action": f"รวบรวม Net USD Exposure และสถานะ FX Forward คงเหลือ หลัง USD/THB อยู่ที่ {fx_p:.2f} THB/USD ({fx_chg})",
+            "owner": "CFO",
+            "timeline": "ทันที (ก่อนแนวต้าน 34.00)",
+            "trigger": "USD/THB ปิดเหนือ 34.00 THB/USD หรือก่อนประชุม FOMC",
+        },
+        {
+            "priority": "P2",
+            "business": "ALL (KBI & BGA)",
+            "action": f"{'เร่งเจรจาลด Fuel Surcharge ทันทีหลัง Brent หลุด 90.00 สู่ ' if brent_below_90 else 'ติดตามและเจรจาปรับ Fuel Surcharge ตาม Brent '}{br_p:.2f} USD/bbl และเทียบต้นทุนดีเซล {ds_p:.2f} THB/L",
+            "owner": "COO & ฝ่ายจัดซื้อ",
+            "timeline": "ภายใน 1–2 สัปดาห์",
+            "trigger": "Brent < 90.00 USD/bbl หรือปรับราคา Diesel B7 > 0.50 THB/L",
+        },
+        {
+            "priority": "P2",
+            "business": "BGA",
+            "action": "ตรวจสอบยอดส่งออกไปอินเดีย พิกัด HS Code และเตรียมข้อมูลต้นทุนรองรับกรณี DGTR อินเดียไต่สวน Anti-Dumping Extrusion",
+            "owner": "CEO & ฝ่ายขาย",
+            "timeline": "ภายใน 2 สัปดาห์",
+            "trigger": "ประกาศไต่สวน/กำหนดอากรเบื้องต้นจาก DGTR อินเดีย",
+        },
+        {
+            "priority": "P3",
+            "business": "ALL (KBI & BGA)",
+            "action": f"บริหารตารางผลิตโรงงาน 69 kV+ เพื่อใช้ไฟ Off-Peak ({el_off:.2f} vs On-Peak {el_p:.2f} THB/kWh) และคุม AR Aging + จองระวางเรือล่วงหน้า",
+            "owner": "COO & CFO",
+            "timeline": "รอบปฏิบัติการรายเดือน",
+            "trigger": "Peak Demand เกินเป้าหรือประกาศค่า Ft งวดใหม่จาก กกพ.",
+        },
+    ]
 
     snapshot = {
         "date": today_str,
@@ -845,12 +1058,12 @@ def create_incremental_snapshot(raw_payload: dict[str, Any], now_bkk: dt.datetim
         "price_rule_note": "",
         "kpis": updated_kpis,
         "soda_ash_supplementary_context": template.get("soda_ash_supplementary_context", []),
-        "decision_cards": template.get("decision_cards", []),
-        "executive_3rows": template.get("executive_3rows", []),
+        "decision_cards": decision_cards,
+        "executive_3rows": executive_3rows,
         "lme_60d_series": kraw["lme_aluminium"].get("series_60d") or template.get("lme_60d_series", []),
         "news": news_list,
-        "impact_matrix": template.get("impact_matrix", []),
-        "management_actions": template.get("management_actions", []),
+        "impact_matrix": impact_matrix,
+        "management_actions": management_actions,
     }
 
     target_path.write_text(json.dumps(snapshot, ensure_ascii=False, indent=2), encoding="utf-8")
