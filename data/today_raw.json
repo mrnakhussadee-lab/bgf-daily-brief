@@ -1,5 +1,5 @@
 {
-  "generated_at_bkk": "2026-11-23 10:42 ICT (UTC+7)",
+  "generated_at_bkk": "2026-11-23 14:56 ICT (UTC+7)",
   "date": "2026-11-23",
   "is_weekend": false,
   "is_holiday": false,
@@ -317,6 +317,34 @@
       "prev_period": "September 2026",
       "prev_price": 156.23,
       "dense_latest": "August 2026: 161.00 USD/MT"
+    },
+    "diesel_b7": {
+      "ok": true,
+      "price": 39.94,
+      "prev_price": 39.99,
+      "diff_yesterday": 0.0,
+      "change_pct": 0.0,
+      "observation_date": "2026-11-23",
+      "effective_date": "2026-11-20",
+      "remark_th": "ราคามีผล ณ วันที่ 20 พ.ย. 69 เวลา 13.00 น.",
+      "source_name": "Bangchak / EPPO",
+      "source_url": "https://www.eppo.go.th/data-energy-statistic/energy-price-th/%E0%B8%A3%E0%B8%B2%E0%B8%84%E0%B8%B2%E0%B8%82%E0%B8%B2%E0%B8%A2%E0%B8%9B%E0%B8%A5%E0%B8%B5%E0%B8%81%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%A1%E0%B8%B1%E0%B8%99/",
+      "data_quality": "VERIFIED CURRENT"
+    },
+    "factory_electricity": {
+      "ok": true,
+      "price": 4.26,
+      "on_peak_total": 4.26,
+      "off_peak_total": 2.75,
+      "on_peak_base": 4.1025,
+      "off_peak_base": 2.5849,
+      "demand_charge": 74.14,
+      "ft_rate": 0.1623,
+      "ft_period": "กันยายน – ธันวาคม 2569",
+      "observation_date": "2026-11-23",
+      "source_name": "PEA / MEA (กกพ.)",
+      "source_url": "https://www.pea.co.th/our-services/tariff/ft",
+      "data_quality": "VERIFIED CURRENT"
     }
   },
   "news_headlines": [
@@ -328,21 +356,21 @@
     },
     {
       "source": "Google News — Thailand Baht / Economy",
-      "title": "Safety checks for Tomorrowland Thailand’s 11–13 Dec debut as organisers forecast 6.132bn baht boost - Nation Thailand",
-      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFBsc2Y2Wks2MUxLUWFDUlpCUjdiN2w4bVoza3dlY3ZENlpNLVU0OUFjUHUwMjFoN19WOWhQbHA3eW9PeGdpcWU3VDFiTDhkOGZJX0NiclpqS0lQY2tlZFVaZGh3?oc=5",
-      "published_at": "Mon, 23 Nov 2026 00:57:00 GMT"
+      "title": "Thailand’s floods cost economy over 45 billion baht, with farmers facing fresh El Niño threat - Nation Thailand",
+      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE45Ml9wZXBOZDcwOEV2U245eEl5b2NSSVE2N3pMZVJfWDhfcUx6cVZGYWJwN1FNZmc5UzhhcHh2RUl3ZmtLSk1UdzZxakNoNDE4MThGYWF4TXpBMXFUM2ZKWC13?oc=5",
+      "published_at": "Mon, 23 Nov 2026 06:07:00 GMT"
     },
     {
       "source": "Google News — Thailand Baht / Economy",
-      "title": "4 ASEAN Central Banks Sign MOU on Local Currency Transaction Framework - SME & Entrepreneurship Magazine",
-      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxONlZ4S28xQXdlaEREZ25Dc2lWZTJ1cVZaSDNLcTI3dnloRzNqdGR1V0dOcUpVWms1OF82bjRIcFIwTWh4MmRQOVB3YnBJRGFiR3VBckZHNVZ2R1BGTGczSXpfTG9OcXp2cTFQd01qU2F0dUdvNjVwY1BVeVJqb3JjS05vdlBDSWxEZWd6YW1Vc1J0dw?oc=5",
-      "published_at": "Mon, 23 Nov 2026 03:00:53 GMT"
+      "title": "Thai Church grants over 2 million baht to support priestly, religious vocations - Herald Malaysia Online",
+      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOb2dyeVFPSXZ2c0xQRlJ1R2IyWmdzdHlzQWRndWozcGJaLVVaZzktM2hUNmE1NXlWQ200N2RYQlZQMVQzZWh4R1JCTF9JbWswQXo1OUNCOUFtcEwteGxzaWExZUd0UmtEOVlnazhXQVFsam5qZ2xaTUIxY2l0bWZWdUhuaE81T1pSd1Flb1FQbGN6RUVJNy1kNmMyOUl3UWZlTkl4eGluT29PNGluajgzejRfTkJleVFiaUhDUmxKWQ?oc=5",
+      "published_at": "Mon, 23 Nov 2026 07:03:07 GMT"
     },
     {
       "source": "Google News — Thailand Baht / Economy",
-      "title": "Convert 500 THB (Thai Baht) to USD (United States Dollar) - Bybit",
-      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFB2ckxOb1ppY2J0eFNrSXVLeWtVQy1laHd5SzFDenVRYkl5Qnk4NFA3dlpielFzZlhLZFJxM0MySzlHTS1BU2E2V2otTGJEUGNfczVZOGd2aWVaVUpT?oc=5",
-      "published_at": "Sat, 21 Nov 2026 00:00:00 GMT"
+      "title": "Thai Central Bank Extends Credit Card Minimum Payment Relief Until End-2028 - kaohoon international",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1ialNHOG1aUXI1XzdMaHd2T3EtYVNSckhzYnFXaG92eURLM3B2WDlsVGRXNS13WEQtcVRpejFpelA2OTAtX2ZsSGxWT0IyWE1NSndYbnFZVG9JdjhucDJGSg?oc=5",
+      "published_at": "Mon, 23 Nov 2026 07:27:57 GMT"
     },
     {
       "source": "Google News — Brent Oil / Freight",
@@ -352,21 +380,21 @@
     },
     {
       "source": "Google News — Brent Oil / Freight",
-      "title": "Oil Slips As Tech-Led Selloff Hits Markets - Finimize",
-      "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBld2tpZVZMNVRkekw5RkRPLUpWX1VyYlVCN3BPWThja2tkTWgtV2xYaUJ6bWJOSnFlaWxYaTVvV19LTTJSbFQ1TnZkZlhIRDFjeDktUFIyQ2QxOUt6eVJ0Z21GX21teUVXOG0zb0FLUWxsSFlmZF82OTNBbw?oc=5",
-      "published_at": "Mon, 23 Nov 2026 02:02:41 GMT"
+      "title": "Goldman Sachs: Oil Prices to Ease in 2027 as Gulf Suppliers Adapt - News and Statistics - IndexBox",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNeVFDeEkzb3YzaWdVY0NpRVozWVV6bHlaVVJ5c2FhdjR0SEhyWmJENUMxOElBZ3JSOVVrd09uNmdoRmJPOTlDNzdHRlFfN1JlaERmOHJFRUI3NC1nWHotcDVQZXFlQ0JsY3lBcTFnRWg5M2tBZ3BWbXhTd1lFSEU0WVRiMmZyd004Uk5GSUZmMHpXT1hYNDJGRmhTeVl6Y0RfdXE3ZlFJTGhRY1E?oc=5",
+      "published_at": "Mon, 23 Nov 2026 04:20:37 GMT"
     },
     {
       "source": "Google News — Brent Oil / Freight",
       "title": "Banks Hike Oil Price Forecasts on Prolonged Gulf Disruptions - EnergyNow.com",
       "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPNkJCUnJ0UGhBRDNCcWRtN1QzR2h5eEl4TEoxWGVaaVowMXA5NWxtM19jYnA5OUtYanNlZTloLUM2VFZTenhiazU5M1VjWU1vM2JXVTM4bUd6NG9FMnlQMWlDRVpWalJIQTY0V2c0QS1KeWdtQVFHa184aW56NEdGMWdPNi1kLUM5eW1YU0xJLU83ZkFWd1E?oc=5",
-      "published_at": "Fri, 20 Nov 2026 21:39:24 GMT"
+      "published_at": "Sat, 21 Nov 2026 03:20:33 GMT"
     },
     {
       "source": "Google News — Brent Oil / Freight",
-      "title": "Oil Futures Fall for Third Straight Week on Supply Outlook - WSJ",
-      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxQUVE3WWhmSEFMaFZmRkVRTHN5R1N0V3lLbmdYYWsyZ0QxSnRqaFdkcktIS1JqTk5RRTI0ODREZV9jcldqb3BpMzhmN3BUOWhRaDI1bGdnMG45VDRxNFU1YXN4X2hEd1Y4RTRLMkdabDU1T2p1cnRpT2R1VUY1UElIS1h3Q3NtdlpEMFpoaHB6bXh5LUNFakwyLUYwWF9KVG9YRmRKT2xwcVp4WkQtYnBucFV5WWFfbDY1dDRlWW9halQwclNac2tubV9vQQ?oc=5",
-      "published_at": "Fri, 20 Nov 2026 21:16:00 GMT"
+      "title": "Oil Slips As Tech-Led Selloff Hits Markets - Finimize",
+      "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBld2tpZVZMNVRkekw5RkRPLUpWX1VyYlVCN3BPWThja2tkTWgtV2xYaUJ6bWJOSnFlaWxYaTVvV19LTTJSbFQ1TnZkZlhIRDFjeDktUFIyQ2QxOUt6eVJ0Z21GX21teUVXOG0zb0FLUWxsSFlmZF82OTNBbw?oc=5",
+      "published_at": "Mon, 23 Nov 2026 00:25:41 GMT"
     }
   ]
 }
