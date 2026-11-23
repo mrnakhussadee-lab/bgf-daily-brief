@@ -2,9 +2,17 @@
   "retention_days": 60,
   "timezone": "Asia/Bangkok",
   "schedule_cron_bkk": "0 8 * * *",
-  "total_days": 3,
-  "latest_date": "2026-11-22",
+  "total_days": 4,
+  "latest_date": "2026-11-23",
   "entries": [
+    {
+      "date": "2026-11-23",
+      "display_date_th": "23 พ.ย. 2026 (จ.)",
+      "month_key": "2026-11",
+      "month_label_th": "พฤศจิกายน 2026",
+      "market_status": "วันทำการ • อัปเดตรอบเช้า 08:00 ICT",
+      "file": "history/2026-11-23.json"
+    },
     {
       "date": "2026-11-22",
       "display_date_th": "22 พ.ย. 2026 (อา.)",

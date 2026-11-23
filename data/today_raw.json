@@ -1,10 +1,10 @@
 {
-  "generated_at_bkk": "2026-11-22 17:02 ICT (UTC+7)",
-  "date": "2026-11-22",
-  "is_weekend": true,
+  "generated_at_bkk": "2026-11-23 10:14 ICT (UTC+7)",
+  "date": "2026-11-23",
+  "is_weekend": false,
   "is_holiday": false,
   "holiday_name_th": "",
-  "short_status_th": "ตลาดปิด",
+  "short_status_th": "ตลาดเปิด",
   "price_rule": "08:00 UTC+7: Today Open if available & market open; else Prior Close",
   "kpis_raw": {
     "usd_thb": {
@@ -319,5 +319,54 @@
       "dense_latest": "August 2026: 161.00 USD/MT"
     }
   },
-  "news_headlines": []
+  "news_headlines": [
+    {
+      "source": "Google News — Thailand Baht / Economy",
+      "title": "Thai baht/US dollar weaker on Monday - TradingView",
+      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOVjN2aXlSU0tZTGFud2xrV1ZIcDMzVzFUbWpiS1JhNjRBQm9JVXRjd3BSTEdHUmFOdkdsTTJwWHdyVEgwZHBXODVWaU5WUHBPWUU4dURBQkROd003cl9kSkdlc3Fnb2hodVBxQWItV3d2VVpNN2VGclZFSFQtTEhPcGx3RGNXY2gzYWdNV2Y0WkY1MzVoRkktczdhRW13a0xiaU5mejVybUZsZw?oc=5",
+      "published_at": "Mon, 23 Nov 2026 02:20:00 GMT"
+    },
+    {
+      "source": "Google News — Thailand Baht / Economy",
+      "title": "Safety checks for Tomorrowland Thailand’s 11–13 Dec debut as organisers forecast 6.132bn baht boost - Nation Thailand",
+      "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFBsc2Y2Wks2MUxLUWFDUlpCUjdiN2w4bVoza3dlY3ZENlpNLVU0OUFjUHUwMjFoN19WOWhQbHA3eW9PeGdpcWU3VDFiTDhkOGZJX0NiclpqS0lQY2tlZFVaZGh3?oc=5",
+      "published_at": "Mon, 23 Nov 2026 00:57:00 GMT"
+    },
+    {
+      "source": "Google News — Thailand Baht / Economy",
+      "title": "4 ASEAN Central Banks Sign MOU on Local Currency Transaction Framework - SME & Entrepreneurship Magazine",
+      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxONlZ4S28xQXdlaEREZ25Dc2lWZTJ1cVZaSDNLcTI3dnloRzNqdGR1V0dOcUpVWms1OF82bjRIcFIwTWh4MmRQOVB3YnBJRGFiR3VBckZHNVZ2R1BGTGczSXpfTG9OcXp2cTFQd01qU2F0dUdvNjVwY1BVeVJqb3JjS05vdlBDSWxEZWd6YW1Vc1J0dw?oc=5",
+      "published_at": "Mon, 23 Nov 2026 03:00:53 GMT"
+    },
+    {
+      "source": "Google News — Thailand Baht / Economy",
+      "title": "Convert 500 THB (Thai Baht) to USD (United States Dollar) - Bybit",
+      "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFB2ckxOb1ppY2J0eFNrSXVLeWtVQy1laHd5SzFDenVRYkl5Qnk4NFA3dlpielFzZlhLZFJxM0MySzlHTS1BU2E2V2otTGJEUGNfczVZOGd2aWVaVUpT?oc=5",
+      "published_at": "Sat, 21 Nov 2026 00:00:00 GMT"
+    },
+    {
+      "source": "Google News — Brent Oil / Freight",
+      "title": "Brent Last Day Financial Overview - CME Group",
+      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNWGU2ejZ1bGYtNEFGUUVqYVFyaFJ6NGFQWFRxM01tU3kzSWtUNDdSUDRRSnF5SDRORGVBbGZDeWstQUR2SFdkVlBmVlp2eGxwTjJ3NHZhTG41RXJHZGlCMWczZWszTXBadHI5clRjSEJ1WkdOdklQWHNGeTlBdGFFMnNqNndmZw?oc=5",
+      "published_at": "Fri, 20 Nov 2026 08:00:00 GMT"
+    },
+    {
+      "source": "Google News — Brent Oil / Freight",
+      "title": "Oil Slips As Tech-Led Selloff Hits Markets - Finimize",
+      "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBld2tpZVZMNVRkekw5RkRPLUpWX1VyYlVCN3BPWThja2tkTWgtV2xYaUJ6bWJOSnFlaWxYaTVvV19LTTJSbFQ1TnZkZlhIRDFjeDktUFIyQ2QxOUt6eVJ0Z21GX21teUVXOG0zb0FLUWxsSFlmZF82OTNBbw?oc=5",
+      "published_at": "Mon, 23 Nov 2026 02:02:41 GMT"
+    },
+    {
+      "source": "Google News — Brent Oil / Freight",
+      "title": "Banks Hike Oil Price Forecasts on Prolonged Gulf Disruptions - EnergyNow.com",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPNkJCUnJ0UGhBRDNCcWRtN1QzR2h5eEl4TEoxWGVaaVowMXA5NWxtM19jYnA5OUtYanNlZTloLUM2VFZTenhiazU5M1VjWU1vM2JXVTM4bUd6NG9FMnlQMWlDRVpWalJIQTY0V2c0QS1KeWdtQVFHa184aW56NEdGMWdPNi1kLUM5eW1YU0xJLU83ZkFWd1E?oc=5",
+      "published_at": "Fri, 20 Nov 2026 21:39:24 GMT"
+    },
+    {
+      "source": "Google News — Brent Oil / Freight",
+      "title": "Oil Futures Fall for Third Straight Week on Supply Outlook - WSJ",
+      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxQUVE3WWhmSEFMaFZmRkVRTHN5R1N0V3lLbmdYYWsyZ0QxSnRqaFdkcktIS1JqTk5RRTI0ODREZV9jcldqb3BpMzhmN3BUOWhRaDI1bGdnMG45VDRxNFU1YXN4X2hEd1Y4RTRLMkdabDU1T2p1cnRpT2R1VUY1UElIS1h3Q3NtdlpEMFpoaHB6bXh5LUNFakwyLUYwWF9KVG9YRmRKT2xwcVp4WkQtYnBucFV5WWFfbDY1dDRlWW9halQwclNac2tubV9vQQ?oc=5",
+      "published_at": "Fri, 20 Nov 2026 21:16:00 GMT"
+    }
+  ]
 }
