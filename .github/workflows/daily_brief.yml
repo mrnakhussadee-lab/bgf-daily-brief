@@ -1,9 +1,10 @@
 name: BGF Daily Brief — 08:00 ICT Schedule
 
 on:
-  schedule:
-    # 01:00 UTC = 08:00 Asia/Bangkok (UTC+7) every day
-    - cron: "0 1 * * *"
+ schedule:
+  # Off-minute slots (07:42 ICT & 08:12 ICT) to avoid GitHub Actions :00 queue drops
+  - cron: "42 0 * * *"
+  - cron: "12 1 * * *"
   workflow_dispatch:
     inputs:
       force_soda:
