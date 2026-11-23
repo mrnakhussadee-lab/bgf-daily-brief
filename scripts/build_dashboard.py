@@ -1406,7 +1406,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
           </div>
         </section>
 
-        ${wrapAccSection('s1', 'SECTION 1 — ภาพรวมราคาตลาด (4 Market KPIs)', `รายงานวันที่ ${escapeHtml(data.display_date_th)}`, '4 KPIs + กราฟ', sec1Body, false)}
+        ${wrapAccSection('s1', 'SECTION 1 — ภาพรวมราคาตลาด (6 Market KPIs)', `รายงานวันที่ ${escapeHtml(data.display_date_th)}`, '6 KPIs + กราฟ', sec1Body, false)}
         ${wrapAccSection('s2', 'SECTION 2 — ประเด็นที่ผู้บริหารต้องพิจารณา', '3 Compact Decision Cards', `${decCount} ประเด็น`, `<div class="grid-3">${decisionHtml}</div>`, true)}
         ${wrapAccSection('s3', 'SECTION 3 — สรุปสำหรับผู้บริหาร', 'อ่านจบภายใน 10–15 วินาที', `${rowCount} ข้อ`, `<div class="exec-rows">${execRowsHtml}</div>`, true)}
         ${wrapAccSection('s4', 'SECTION 4 — ประเด็นสำคัญที่ต้องติดตาม', 'A. Top Alerts (สูงสุด 3) • B. Watchlist', `${newsCount} ข่าว`, sec4Body, false)}
