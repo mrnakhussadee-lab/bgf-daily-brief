@@ -3,7 +3,7 @@
   "display_date_th": "23 พ.ย. 2026 (จ.)",
   "month_key": "2026-11",
   "month_label_th": "พฤศจิกายน 2026",
-  "report_time_bkk": "2026-11-23 14:56 ICT (UTC+7)",
+  "report_time_bkk": "2026-11-23 17:05 ICT (UTC+7)",
   "scheduled_slot_bkk": "08:00 ICT (UTC+7)",
   "is_weekend": false,
   "is_holiday": false,
@@ -184,51 +184,51 @@
       "priority_status": "ต้องตัดสินใจ",
       "priority_level": "critical",
       "company": "BGA",
-      "headline": "LME Aluminium Cash พุ่ง 3,184.50 USD/t (+2.56%) ขณะ Backwardation ถ่าง +353.00 USD/t",
-      "financial_impact": "ซื้อ Spot แพงกว่าสัญญา 3-Month (2,831.50 USD/t) ถึง 353.00 USD/t กดดัน Gross Margin และดึง Working Capital เพิ่มขึ้นทันที",
+      "headline": "LME Aluminium Cash อยู่ที่ 3,184.50 USD/t (+2.56% DoD) | Spread +353.00 USD/t",
+      "financial_impact": "ซื้อ Spot สูงกว่าสัญญา 3-Month (2,831.50 USD/t) อยู่ 353.00 USD/t ท่ามกลางสต็อก LME 223,525 ตัน กดดัน Gross Margin และ Working Capital ของ BGA",
       "recommended_action": "ทบทวนสัดส่วนสัญญาซื้อ Spot เทียบ 3M Forward และตรวจสอบ Lead Time/สต็อกคงเหลือ (รอข้อมูลภายในบริษัท)",
       "owner": "CFO & COO",
-      "review_point": "ทบทวนเมื่อ LME 3M–Cash Spread > 250 USD/t หรือสต็อก LME ต่ำกว่า 220,000 ตัน"
+      "review_point": "ทบทวนเมื่อ LME Cash–3M Spread > 250 USD/t หรือสต็อก LME ต่ำกว่า 220,000 ตัน"
     },
     {
       "priority_status": "ควรพิจารณา",
       "priority_level": "warning",
       "company": "ALL (KBI & BGA)",
-      "headline": "USD/THB จ่อแนวต้าน 34.00 THB/USD (33.95) ขณะภาคก่อสร้างเอกชนไทย Q3 หด -0.5%",
-      "financial_impact": "ต้นทุนนำเข้าสกุล USD สูงขึ้นราว +1.10% MoM ในภาวะที่ตลาดอสังหาฯ ในประเทศชะลอตัว ทำให้ส่งผ่านราคาขายได้จำกัด",
-      "recommended_action": "ประเมิน Net USD Exposure ของ KBI/BGA และเตรียมกรอบบริหารความเสี่ยง FX ก่อนประชุม Fed ธ.ค. (รอข้อมูลภายในบริษัท)",
+      "headline": "USD/THB เคลื่อนไหวที่ 33.95 THB/USD (-0.06% DoD) ใกล้แนวต้าน 34.00",
+      "financial_impact": "ต้นทุนนำเข้าวัตถุดิบและค่าขนส่งสกุล USD สูงขึ้นในรูปเงินบาท ในภาวะที่ตลาดอสังหาฯ ในประเทศยังชะลอตัว",
+      "recommended_action": "ประเมิน Net USD Exposure ของ KBI/BGA และเตรียมกรอบบริหารความเสี่ยง FX (รอข้อมูลภายในบริษัท)",
       "owner": "CFO",
-      "review_point": "ทบทวนเมื่อ USD/THB ปิดเหนือ 34.00 THB/USD หรือก่อนประชุม FOMC ธ.ค."
+      "review_point": "ทบทวนเมื่อ USD/THB ปิดเหนือ 34.00 THB/USD หรือก่อนประชุม FOMC"
     },
     {
       "priority_status": "เฝ้าระวัง",
       "priority_level": "watch",
-      "company": "BGA",
-      "headline": "อินเดียเปิดไต่สวน Anti-Dumping (AD) อะลูมิเนียม Extrusion จากไทยและ 3 ประเทศ",
-      "financial_impact": "เสี่ยงกระทบยอดส่งออกไปอินเดีย (หากมี) และเสี่ยงเกิดสินค้าจีน/เวียดนามไหลย้อนเข้ามาตัดราคาในตลาดไทย/อาเซียน",
-      "recommended_action": "ตรวจสอบสัดส่วนรายได้ส่งออกอินเดีย พิกัดสินค้า และเตรียมข้อมูลต้นทุนการผลิตไว้ล่วงหน้า (รอข้อมูลภายในบริษัท)",
-      "owner": "CEO & ฝ่ายขาย",
-      "review_point": "ติดตามประกาศเบื้องต้นของ DGTR อินเดีย และการเปลี่ยนแปลงราคาเสนอขายในอาเซียน"
+      "company": "ALL (KBI & BGA)",
+      "headline": "Brent ปรับสู่ 92.57 USD/bbl (+0.64% DoD) | Diesel B7 39.94 THB/L | ค่าไฟ 4.26 THB/kWh",
+      "financial_impact": "ติดตามต้นทุนพลังงานผสม: Brent 92.57 USD/bbl, Diesel B7 39.94 THB/L และค่าไฟโรงงาน 69 kV+ ที่ 4.26 THB/kWh (Ft: +0.1623)",
+      "recommended_action": "เจรจาปรับลด Fuel Surcharge กับผู้ขนส่ง และวางแผนกะเดินเครื่องเตาหลอม/รีดช่วง Off-Peak (รอข้อมูลภายในบริษัท)",
+      "owner": "COO & จัดซื้อ",
+      "review_point": "ทบทวนเมื่อ Brent หลุด 90.00 USD/bbl หรือประกาศปรับราคา Diesel B7 / ค่า Ft รอบใหม่"
     }
   ],
   "executive_3rows": [
     {
       "num": 1,
       "label": "SITUATION — สถานการณ์สำคัญ",
-      "headline": "ตลาดปิดวันเสาร์ อ้างอิงราคาปิดศุกร์ 20 พ.ย. 2026: บาทจ่อ 34.00, LME Cash พุ่ง +2.56%, Brent อ่อนลง -14.93% MoM",
-      "detail": "ดอลลาร์แข็งค่าสูงสุดรอบ 19 เดือน (โอกาส Fed ขึ้นดอกเบี้ย ธ.ค. 96%) กดดัน USD/THB ที่ 33.95 และทองคำร่วง 2.8% ขณะที่ LME Aluminium Cash ดีดตัวสู่ 3,184.50 USD/t สวนทาง Brent ที่ลดลงต่อเนื่อง 3 สัปดาห์เหลือ 92.57 USD/bbl และ Soda Ash FOB China (General Proxy ต.ค. 2026) ทรงตัวที่ 156.23 USD/MT"
+      "headline": "23 พ.ย. 2026 (จ.) (ตลาดเปิด): USD/THB 33.95 (-0.06% DoD), Brent 92.57 USD/bbl (+0.64% DoD), LME 3,184.50 USD/t",
+      "detail": "อัตราแลกเปลี่ยนอยู่ที่ 33.95 THB/USD, น้ำมันดิบ Brent อยู่ที่ 92.57 USD/bbl, ดีเซล B7 ในประเทศ 39.94 THB/Liter, ค่าไฟโรงงาน 69 kV+ On-Peak 4.26 / Off-Peak 2.75 THB/kWh (Ft: +0.1623), LME Aluminium Cash 3,184.50 USD/t และ Soda Ash FOB China 156.23 USD/MT"
     },
     {
       "num": 2,
       "label": "BUSINESS IMPACT — ผลกระทบต่อ KBI / BGA",
-      "headline": "BGA เผชิญแรงกดดันต้นทุน Spot + คดี AD อินเดีย สูงกว่า KBI ที่ได้อานิสงส์ Brent และ Soda Ash ทรงตัวต่ำ",
-      "detail": "ทั้งสองบริษัทรับแรงต้านจากอุปสงค์อสังหาฯ ไทย Q3 (-0.6% YoY) และบาทอ่อน 33.95 แต่ BGA มีความเสี่ยง Margin/Working Capital เพิ่มจาก LME Backwardation +353.00 USD/t และ AD อินเดีย ส่วน KBI ได้แรงหนุนจาก Brent อ่อนตัวและ Soda Ash FOB China 156.23 USD/MT (ผลสุทธิรอข้อมูลสัญญาและ Hedging ภายในบริษัท)"
+      "headline": "BGA รับแรงกดดัน LME Backwardation (+353.00 USD/t) ส่วน KBI ได้แรงหนุนจาก Brent อ่อนลงสู่ 92.57 และ Soda Ash 156.23",
+      "detail": "ทั้งสองบริษัทต้องคุมต้นทุนนำเข้าสกุล USD ที่ 33.95 THB/USD, ค่าขนส่งดีเซล 39.94 THB/L และค่าไฟ 69 kV+ (4.26 THB/kWh); BGA เสี่ยง Margin Compression จาก LME Cash–3M Spread +353.00 USD/t มากที่สุด ขณะที่ KBI ได้อานิสงส์พลังงานและ Soda Ash ระดับต่ำ (รอข้อมูลภายในบริษัท)"
     },
     {
       "num": 3,
       "label": "MANAGEMENT RESPONSE — สิ่งที่ผู้บริหารควรทำ",
-      "headline": "เร่งตรวจสอบ Exposure จริงก่อนตัดสินใจ: คุม LME 3M vs Spot, เช็ก Net FX และจับจองระวางเรือ ธ.ค.",
-      "detail": "CFO & COO ตรวจสอบสต็อก-สูตรราคา LME ของ BGA และ Net USD Exposure ของกลุ่มก่อนตัดสินใจล็อกราคาใดๆ; ฝ่ายขาย BGA ตรวจยอดส่งออกอินเดีย; ฝ่ายโลจิสติกส์จองระวางเรือก่อนสายเรือเก็บ PSS ยุโรป 1,000–1,600 USD/FEU ในเดือน ธ.ค."
+      "headline": "คุมสูตรซื้อ LME 3M vs Spot, ต่อรอง Fuel Surcharge รับ Brent ขาลง และเช็ก Net FX Exposure ก่อนแนวต้าน 34.00",
+      "detail": "CFO & COO ตรวจสต็อก/สูตรซื้อ LME ของ BGA และ Net USD Exposure ของกลุ่ม; ฝ่ายจัดซื้อใช้จังหวะ Brent ระดับ 92.57 ต่อรองค่าขนส่ง/Fuel Surcharge และเน้นผลิตช่วง Off-Peak (2.75 THB/kWh)"
     }
   ],
   "lme_60d_series": [
@@ -505,66 +505,6 @@
   ],
   "news": [
     {
-      "id": "auto-2026-11-23-1",
-      "tier": "watchlist",
-      "title": "Thai baht/US dollar weaker on Monday - TradingView",
-      "priority_tier": "FX, Energy, Raw Materials, Industry Demand",
-      "company": "ALL",
-      "published_at": "Mon, 23 Nov 2026 02:20:00 GMT",
-      "what": "หัวข้อข่าวล่าสุดจาก Google News — Thailand Baht / Economy: Thai baht/US dollar weaker on Monday - TradingView",
-      "so_what": "ติดตามผลกระทบต่อ KBI และ BGA ตามตัวขับเคลื่อนต้นทุน/อุปสงค์ (Automated Feed)",
-      "financial": "ประเมินผลกระทบต่อ Margin และ Cash Flow เทียบกับราคา KPI ล่าสุด (รอข้อมูลภายในบริษัท)",
-      "now_what": "เปิดลิงก์ต้นทางเพื่อตรวจสอบรายละเอียดเพิ่มเติมก่อนตัดสินใจเชิงพาณิชย์",
-      "owner": "ผู้บริหาร / ฝ่ายจัดซื้อ",
-      "source_name": "Google News — Thailand Baht / Economy",
-      "source_url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOVjN2aXlSU0tZTGFud2xrV1ZIcDMzVzFUbWpiS1JhNjRBQm9JVXRjd3BSTEdHUmFOdkdsTTJwWHdyVEgwZHBXODVWaU5WUHBPWUU4dURBQkROd003cl9kSkdlc3Fnb2hodVBxQWItV3d2VVpNN2VGclZFSFQtTEhPcGx3RGNXY2gzYWdNV2Y0WkY1MzVoRkktczdhRW13a0xiaU5mejVybUZsZw?oc=5"
-    },
-    {
-      "id": "auto-2026-11-23-2",
-      "tier": "watchlist",
-      "title": "Safety checks for Tomorrowland Thailand’s 11–13 Dec debut as organisers forecast 6.132bn baht boost - Nation Thailand",
-      "priority_tier": "FX, Energy, Raw Materials, Industry Demand",
-      "company": "ALL",
-      "published_at": "Mon, 23 Nov 2026 00:57:00 GMT",
-      "what": "หัวข้อข่าวล่าสุดจาก Google News — Thailand Baht / Economy: Safety checks for Tomorrowland Thailand’s 11–13 Dec debut as organisers forecast 6.132bn baht boost - Nation Thailand",
-      "so_what": "ติดตามผลกระทบต่อ KBI และ BGA ตามตัวขับเคลื่อนต้นทุน/อุปสงค์ (Automated Feed)",
-      "financial": "ประเมินผลกระทบต่อ Margin และ Cash Flow เทียบกับราคา KPI ล่าสุด (รอข้อมูลภายในบริษัท)",
-      "now_what": "เปิดลิงก์ต้นทางเพื่อตรวจสอบรายละเอียดเพิ่มเติมก่อนตัดสินใจเชิงพาณิชย์",
-      "owner": "ผู้บริหาร / ฝ่ายจัดซื้อ",
-      "source_name": "Google News — Thailand Baht / Economy",
-      "source_url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFBsc2Y2Wks2MUxLUWFDUlpCUjdiN2w4bVoza3dlY3ZENlpNLVU0OUFjUHUwMjFoN19WOWhQbHA3eW9PeGdpcWU3VDFiTDhkOGZJX0NiclpqS0lQY2tlZFVaZGh3?oc=5"
-    },
-    {
-      "id": "auto-2026-11-23-3",
-      "tier": "watchlist",
-      "title": "4 ASEAN Central Banks Sign MOU on Local Currency Transaction Framework - SME & Entrepreneurship Magazine",
-      "priority_tier": "FX, Energy, Raw Materials, Industry Demand",
-      "company": "ALL",
-      "published_at": "Mon, 23 Nov 2026 03:00:53 GMT",
-      "what": "หัวข้อข่าวล่าสุดจาก Google News — Thailand Baht / Economy: 4 ASEAN Central Banks Sign MOU on Local Currency Transaction Framework - SME & Entrepreneurship Magazine",
-      "so_what": "ติดตามผลกระทบต่อ KBI และ BGA ตามตัวขับเคลื่อนต้นทุน/อุปสงค์ (Automated Feed)",
-      "financial": "ประเมินผลกระทบต่อ Margin และ Cash Flow เทียบกับราคา KPI ล่าสุด (รอข้อมูลภายในบริษัท)",
-      "now_what": "เปิดลิงก์ต้นทางเพื่อตรวจสอบรายละเอียดเพิ่มเติมก่อนตัดสินใจเชิงพาณิชย์",
-      "owner": "ผู้บริหาร / ฝ่ายจัดซื้อ",
-      "source_name": "Google News — Thailand Baht / Economy",
-      "source_url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxONlZ4S28xQXdlaEREZ25Dc2lWZTJ1cVZaSDNLcTI3dnloRzNqdGR1V0dOcUpVWms1OF82bjRIcFIwTWh4MmRQOVB3YnBJRGFiR3VBckZHNVZ2R1BGTGczSXpfTG9OcXp2cTFQd01qU2F0dUdvNjVwY1BVeVJqb3JjS05vdlBDSWxEZWd6YW1Vc1J0dw?oc=5"
-    },
-    {
-      "id": "auto-2026-11-23-4",
-      "tier": "watchlist",
-      "title": "Convert 500 THB (Thai Baht) to USD (United States Dollar) - Bybit",
-      "priority_tier": "FX, Energy, Raw Materials, Industry Demand",
-      "company": "ALL",
-      "published_at": "Sat, 21 Nov 2026 00:00:00 GMT",
-      "what": "หัวข้อข่าวล่าสุดจาก Google News — Thailand Baht / Economy: Convert 500 THB (Thai Baht) to USD (United States Dollar) - Bybit",
-      "so_what": "ติดตามผลกระทบต่อ KBI และ BGA ตามตัวขับเคลื่อนต้นทุน/อุปสงค์ (Automated Feed)",
-      "financial": "ประเมินผลกระทบต่อ Margin และ Cash Flow เทียบกับราคา KPI ล่าสุด (รอข้อมูลภายในบริษัท)",
-      "now_what": "เปิดลิงก์ต้นทางเพื่อตรวจสอบรายละเอียดเพิ่มเติมก่อนตัดสินใจเชิงพาณิชย์",
-      "owner": "ผู้บริหาร / ฝ่ายจัดซื้อ",
-      "source_name": "Google News — Thailand Baht / Economy",
-      "source_url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTFB2ckxOb1ppY2J0eFNrSXVLeWtVQy1laHd5SzFDenVRYkl5Qnk4NFA3dlpielFzZlhLZFJxM0MySzlHTS1BU2E2V2otTGJEUGNfczVZOGd2aWVaVUpT?oc=5"
-    },
-    {
       "id": "n1",
       "tier": "top_alert",
       "title": "LME Aluminium Cash พุ่ง +2.56% สู่ 3,184.50 USD/t ขณะสต็อกต่ำ 223,525 ตัน",
@@ -608,6 +548,66 @@
       "owner": "CEO & ฝ่ายขาย",
       "source_name": "AL Circle",
       "source_url": "https://www.alcircle.com/news/india-probes-aluminium-dumping-by-china-malaysia-vietnam-thailand-vedanta-hindalco-shares-eyed-122026"
+    },
+    {
+      "id": "auto-2026-11-23-1",
+      "tier": "watchlist",
+      "title": "Thai baht/US dollar weaker on Monday - marketscreener.com",
+      "priority_tier": "FX, Energy, Raw Materials, Industry Demand",
+      "company": "ALL",
+      "published_at": "Mon, 23 Nov 2026 02:21:25 GMT",
+      "what": "หัวข้อข่าวล่าสุดจาก Google News — Thailand Baht / BOT: Thai baht/US dollar weaker on Monday - marketscreener.com",
+      "so_what": "ติดตามผลกระทบต่อ KBI และ BGA ตามตัวขับเคลื่อนต้นทุน/อุปสงค์ (Automated Feed)",
+      "financial": "ประเมินผลกระทบต่อ Margin และ Cash Flow เทียบกับราคา KPI ล่าสุด (รอข้อมูลภายในบริษัท)",
+      "now_what": "เปิดลิงก์ต้นทางเพื่อตรวจสอบรายละเอียดเพิ่มเติมก่อนตัดสินใจเชิงพาณิชย์",
+      "owner": "ผู้บริหาร / ฝ่ายจัดซื้อ",
+      "source_name": "Google News — Thailand Baht / BOT",
+      "source_url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxPVDc0WTZQeTBna0NYdjVibk8yaXBtTGk4eXlXN0o3Z1hqWXRCY1JIVlp6LWQ4V1czM0dZdDdFTHJyTU9kbm44aWctMU4wc1lMUjNSZ2k0cmhTYzNTOVliUTRLRmFCS25GaTdmQVBpeHR5MDhUZG9hczkyWHkxMWNHUGNkQ2NBTDNEdXpOYzJ2RGFBZTA?oc=5"
+    },
+    {
+      "id": "auto-2026-11-23-2",
+      "tier": "watchlist",
+      "title": "Thai baht/US dollar weaker on Monday - Investify",
+      "priority_tier": "FX, Energy, Raw Materials, Industry Demand",
+      "company": "ALL",
+      "published_at": "Mon, 23 Nov 2026 07:01:38 GMT",
+      "what": "หัวข้อข่าวล่าสุดจาก Google News — Thailand Baht / BOT: Thai baht/US dollar weaker on Monday - Investify",
+      "so_what": "ติดตามผลกระทบต่อ KBI และ BGA ตามตัวขับเคลื่อนต้นทุน/อุปสงค์ (Automated Feed)",
+      "financial": "ประเมินผลกระทบต่อ Margin และ Cash Flow เทียบกับราคา KPI ล่าสุด (รอข้อมูลภายในบริษัท)",
+      "now_what": "เปิดลิงก์ต้นทางเพื่อตรวจสอบรายละเอียดเพิ่มเติมก่อนตัดสินใจเชิงพาณิชย์",
+      "owner": "ผู้บริหาร / ฝ่ายจัดซื้อ",
+      "source_name": "Google News — Thailand Baht / BOT",
+      "source_url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQX2pRY0JhQ1phOTZiS1l3bXlHOFNBaWlfWHVpMjYwREY1bVFXZXd6enhqdm4tSzNvVVB2aHc4ZUFhbDhOOW4zcHh2TFhDdGt5eENzWHc0eFhqT3BQeVlBNG5HSkZIUTEyTExSd2tpVEp4Q2FCejBQS1VtdTAycXJJX0NYNHU2dw?oc=5"
+    },
+    {
+      "id": "auto-2026-11-23-3",
+      "tier": "watchlist",
+      "title": "Convert 1000 THB (Thai Baht) to USD (United States Dollar) - Bybit",
+      "priority_tier": "FX, Energy, Raw Materials, Industry Demand",
+      "company": "ALL",
+      "published_at": "Sun, 22 Nov 2026 00:00:00 GMT",
+      "what": "หัวข้อข่าวล่าสุดจาก Google News — Thailand Baht / BOT: Convert 1000 THB (Thai Baht) to USD (United States Dollar) - Bybit",
+      "so_what": "ติดตามผลกระทบต่อ KBI และ BGA ตามตัวขับเคลื่อนต้นทุน/อุปสงค์ (Automated Feed)",
+      "financial": "ประเมินผลกระทบต่อ Margin และ Cash Flow เทียบกับราคา KPI ล่าสุด (รอข้อมูลภายในบริษัท)",
+      "now_what": "เปิดลิงก์ต้นทางเพื่อตรวจสอบรายละเอียดเพิ่มเติมก่อนตัดสินใจเชิงพาณิชย์",
+      "owner": "ผู้บริหาร / ฝ่ายจัดซื้อ",
+      "source_name": "Google News — Thailand Baht / BOT",
+      "source_url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE5id2h3eUVfODVIdEtpa3p3VS05cWZhRTRwY3lKRndCbHFJVFZtV1VYTE5MbG5nbmNxeTZiTkNOblRiakNhZVVMMHpBSEl0YTJGWWdlZ0JiV2daVjZ3T0E?oc=5"
+    },
+    {
+      "id": "auto-2026-11-23-4",
+      "tier": "watchlist",
+      "title": "Brent Crude Oil Price Jumps After Attack on Iran’s South Pars Field - EnergyNow.com",
+      "priority_tier": "FX, Energy, Raw Materials, Industry Demand",
+      "company": "ALL",
+      "published_at": "Sun, 22 Nov 2026 16:18:28 GMT",
+      "what": "หัวข้อข่าวล่าสุดจาก Google News — Brent / Diesel / Freight: Brent Crude Oil Price Jumps After Attack on Iran’s South Pars Field - EnergyNow.com",
+      "so_what": "ติดตามผลกระทบต่อ KBI และ BGA ตามตัวขับเคลื่อนต้นทุน/อุปสงค์ (Automated Feed)",
+      "financial": "ประเมินผลกระทบต่อ Margin และ Cash Flow เทียบกับราคา KPI ล่าสุด (รอข้อมูลภายในบริษัท)",
+      "now_what": "เปิดลิงก์ต้นทางเพื่อตรวจสอบรายละเอียดเพิ่มเติมก่อนตัดสินใจเชิงพาณิชย์",
+      "owner": "ผู้บริหาร / ฝ่ายจัดซื้อ",
+      "source_name": "Google News — Brent / Diesel / Freight",
+      "source_url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxON1BJTnRPVzRvWThVQmxiYVA5SDRZc1lJVXhCeENHMGVpaThRRTVJN0hvbGtXaWsxZmc2VEctOE1SRjhhR0lRcUVWeVdtdGJZbzVIWUpNelVha0M2aFctTEZzYUxKOHpiVkpvMlp6LVotLXF1MVlrWTNFemRsVjlmcE1Rd2hoT2FTUElLLUVCUEN1ZUhXTjRjdDNoZw?oc=5"
     },
     {
       "id": "n4",
@@ -657,39 +657,47 @@
   ],
   "impact_matrix": [
     {
-      "driver": "USD/THB อ่อนค่าใกล้ 34.00 (33.95 THB/USD)",
+      "driver": "USD/THB 33.95 THB/USD (-0.06% DoD)",
       "kbi_indicator": "🟡 ต้องติดตาม",
-      "kbi_text": "เพิ่มต้นทุนนำเข้า Soda Ash และค่าขนส่งสกุล USD ในรูปเงินบาท แต่รายได้ส่งออกช่วยชดเชยบางส่วน (รอข้อมูลภายใน: Net FX Exposure)",
+      "kbi_text": "ต้นทุนนำเข้า Soda Ash และค่าขนส่งสกุล USD สูงขึ้นในรูปเงินบาท แต่รายได้ส่งออกช่วยชดเชยบางส่วน (รอข้อมูลภายใน: Net FX Exposure)",
       "bga_indicator": "🟡 ต้องติดตาม",
       "bga_text": "เพิ่มต้นทุนนำเข้าวัตถุดิบอะลูมิเนียมสกุล USD ในรูปบาท ขณะที่ตลาดก่อสร้างในประเทศยังชะลอตัว (รอข้อมูลภายใน: FX Hedge)",
-      "management_implication": "CFO ตรวจสอบ Net USD Exposure ของทั้ง KBI และ BGA เพื่อประเมินความจำเป็นในการจัดการความเสี่ยงค่าเงินก่อนประชุม Fed ธ.ค."
+      "management_implication": "CFO ตรวจสอบ Net USD Exposure ของทั้ง KBI และ BGA ก่อนระดับแนวต้าน 34.00 THB/USD"
     },
     {
-      "driver": "Brent Oil อ่อนลงสู่ 92.57 USD/bbl (-14.93% MoM)",
+      "driver": "Brent 92.57 USD/bbl (+0.64% DoD) & Diesel B7 39.94 THB/L",
       "kbi_indicator": "🟢 ผลกระทบเชิงบวก",
-      "kbi_text": "ช่วยบรรเทาแรงกดดันต้นทุนพลังงานเตาหลอมกระจกและค่าขนส่งระยะกลาง แม้ราคายังสูงกว่าปีก่อน +47.97%",
+      "kbi_text": "Brent อ่อนตัวสู่ 92.57 USD/bbl ช่วยบรรเทาต้นทุนเชื้อเพลิงเตาหลอมระยะกลาง ขณะที่ดีเซล B7 ในประเทศอยู่ที่ 39.94 THB/L",
       "bga_indicator": "🟢 ผลกระทบเชิงบวก",
-      "bga_text": "ช่วยลดแรงกดดันค่าขนส่งและพลังงานในกระบวนการผลิต/รีดอะลูมิเนียม",
-      "management_implication": "ฝ่ายจัดซื้อเจรจาปรับลด Fuel Surcharge ตามรอบราคาพลังงาน และหลีกเลี่ยงการล็อกสัญญาพลังงานระยะยาวในช่วงขาลง"
+      "bga_text": "เปิดโอกาสต่อรองลดค่าขนส่งทางบก (ดีเซล 39.94 THB/L) และ Fuel Surcharge การขนส่งวัตถุดิบ/สินค้าสำเร็จรูป",
+      "management_implication": "ฝ่ายจัดซื้อเจรจาปรับลด Fuel Surcharge ตามทิศทาง Brent และหลีกเลี่ยงการล็อกสัญญาพลังงานระยะยาวในช่วงขาลง"
     },
     {
-      "driver": "LME Aluminium Cash 3,184.50 USD/t (+2.56%) & Backwardation +353.00 USD/t",
+      "driver": "Factory Electricity 69 kV+ 4.26 THB/kWh (Ft: +0.1623)",
+      "kbi_indicator": "🟡 ต้องติดตาม",
+      "kbi_text": "อัตรา TOU 69 kV+ On-Peak 4.26 vs Off-Peak 2.75 THB/kWh (Demand 74.14 THB/kW) กระทบต้นทุนเดินเครื่องแปรรูป/หลอมต่อเนื่อง",
+      "bga_indicator": "🟡 ต้องติดตาม",
+      "bga_text": "ต้นทุนไฟฟ้าในสายรีดอะลูมิเนียมและชุบผิวอิงอัตรา 4.26 / 2.75 THB/kWh ต้องคุม Peak Demand Charge",
+      "management_implication": "COO บริหาร Load Factor ช่วง On/Off-Peak และติดตามประกาศค่า Ft งวดถัดไปจาก กกพ."
+    },
+    {
+      "driver": "LME Aluminium Cash 3,184.50 USD/t (+2.56% DoD) & Spread +353.00",
       "kbi_indicator": "⚪ ไม่มีผลกระทบโดยตรงที่ยืนยันได้",
       "kbi_text": "KBI ไม่ได้ใช้อะลูมิเนียมเป็นวัตถุดิบหลักในการผลิตกระจกแผ่น",
       "bga_indicator": "🔴 ผลกระทบเชิงลบสูง",
-      "bga_text": "ราคา Spot สูงกว่า 3-Month (2,831.50 USD/t) ถึง 353.00 USD/t กดดันต้นทุนวัตถุดิบ Gross Margin และ Working Capital หากพึ่งพาการซื้อแบบ Prompt/Spot",
+      "bga_text": "Cash สูงกว่า 3-Month (2,831.50 USD/t) อยู่ +353.00 USD/t และสต็อกต่ำ 223,525 ตัน กดดัน Margin และ Working Capital",
       "management_implication": "COO และ CFO ตรวจสอบสูตรราคาในสัญญาซื้อ (Spot vs 3M) และระดับสต็อกจริงก่อนพิจารณาปรับแผนสั่งซื้อ"
     },
     {
-      "driver": "Soda Ash FOB China 156.23 USD/MT (General Proxy ต.ค. 2026) & ซัพพลายจีนเพียงพอ",
+      "driver": "Soda Ash FOB China 156.23 USD/MT (General Proxy)",
       "kbi_indicator": "🟢 ผลกระทบเชิงบวก",
-      "kbi_text": "ราคา FOB China ทรงตัว 0.00% MoM จากภาวะซัพพลายล้นตลาดในจีน ช่วยคุมแรงกดดันต้นทุนวัตถุดิบหลัก (รอข้อมูลภายใน: Landed Cost ของ KBI)",
+      "kbi_text": "ราคา FOB China ทรงตัวระดับต่ำที่ 156.23 USD/MT ช่วยคุมแรงกดดันต้นทุนวัตถุดิบหลัก (รอข้อมูลภายใน: Landed Cost ของ KBI)",
       "bga_indicator": "⚪ ไม่มีผลกระทบโดยตรงที่ยืนยันได้",
       "bga_text": "BGA ไม่ได้ใช้ Soda Ash เป็นวัตถุดิบหลัก",
-      "management_implication": "ฝ่ายจัดซื้อ KBI ใช้ระดับ FOB China (156.23 USD/MT) เป็นข้อมูลเปรียบเทียบต่อรองกับราคาเสนอขายจริงของซัพพลายเออร์"
+      "management_implication": "ฝ่ายจัดซื้อ KBI ใช้ระดับ FOB China (156.23 USD/MT) เป็นข้อมูลเปรียบเทียบต่อรองราคาเสนอขายจริงของซัพพลายเออร์"
     },
     {
-      "driver": "อสังหาฯ ไทย Q3 หดตัว -0.6% & คดี AD อะลูมิเนียมอินเดีย + PSS ค่าระวาง ธ.ค.",
+      "driver": "อุปสงค์อสังหาฯ ไทย (-0.6% YoY) & คดี AD อินเดีย + PSS ค่าระวาง",
       "kbi_indicator": "🟡 ต้องติดตาม",
       "kbi_text": "ก่อสร้างเอกชนชะลอ (-0.5%) กดดันยอดขายในประเทศ ขณะที่ PSS ค่าระวางยุโรปอาจกระทบต้นทุนส่งออก",
       "bga_indicator": "🔴 ผลกระทบเชิงลบสูง",
@@ -701,7 +709,7 @@
     {
       "priority": "P1",
       "business": "BGA",
-      "action": "ตรวจสอบสัดส่วนสัญญาซื้อ LME Aluminium (Spot vs 3-Month) และระดับสต็อกคงคลังเพื่อประเมินผลกระทบ Backwardation +353.00 USD/t",
+      "action": "ตรวจสอบสัดส่วนสัญญาซื้อ LME Aluminium (Spot vs 3M) และสต็อกคงคลัง หลัง Cash อยู่ที่ 3,184.50 USD/t และ Spread +353.00 USD/t",
       "owner": "CFO & COO",
       "timeline": "ทันที (สัปดาห์นี้)",
       "trigger": "Spread Cash–3M > 250.00 USD/t หรือสต็อก LME < 220,000 ตัน"
@@ -709,10 +717,18 @@
     {
       "priority": "P1",
       "business": "ALL (KBI & BGA)",
-      "action": "รวบรวม Net USD Cash Flow Exposure และสถานะ FX Forward คงเหลือเพื่อเตรียมทางเลือกบริหารความเสี่ยงค่าเงิน",
+      "action": "รวบรวม Net USD Exposure และสถานะ FX Forward คงเหลือ หลัง USD/THB อยู่ที่ 33.95 THB/USD (-0.06% DoD)",
       "owner": "CFO",
-      "timeline": "ทันที (ก่อน ธ.ค.)",
-      "trigger": "USD/THB ปิดเหนือ 34.00 THB/USD หรือก่อนประชุม Fed ธ.ค."
+      "timeline": "ทันที (ก่อนแนวต้าน 34.00)",
+      "trigger": "USD/THB ปิดเหนือ 34.00 THB/USD หรือก่อนประชุม FOMC"
+    },
+    {
+      "priority": "P2",
+      "business": "ALL (KBI & BGA)",
+      "action": "ติดตามและเจรจาปรับ Fuel Surcharge ตาม Brent 92.57 USD/bbl และเทียบต้นทุนดีเซล 39.94 THB/L",
+      "owner": "COO & ฝ่ายจัดซื้อ",
+      "timeline": "ภายใน 1–2 สัปดาห์",
+      "trigger": "Brent < 90.00 USD/bbl หรือปรับราคา Diesel B7 > 0.50 THB/L"
     },
     {
       "priority": "P2",
@@ -723,20 +739,12 @@
       "trigger": "ประกาศไต่สวน/กำหนดอากรเบื้องต้นจาก DGTR อินเดีย"
     },
     {
-      "priority": "P2",
-      "business": "KBI",
-      "action": "ขอ Quotation เปรียบเทียบ FOB/CIF Soda Ash รอบใหม่และเจรจาปรับลด Fuel Surcharge ตามแนวโน้ม Brent ที่ลดลง -14.93% MoM",
-      "owner": "COO & ฝ่ายจัดซื้อ",
-      "timeline": "ภายใน 2 สัปดาห์",
-      "trigger": "เมื่อได้รับใบเสนอราคางวด ธ.ค. หรือ Brent หลุด 90.00 USD/bbl"
-    },
-    {
       "priority": "P3",
       "business": "ALL (KBI & BGA)",
-      "action": "เร่งจองระวางเรือส่งออกก่อนเก็บ PSS เดือน ธ.ค. และทบทวนวงเงินสินเชื่อลูกหนี้ภาคอสังหาฯ ในประเทศ (AR Aging)",
+      "action": "บริหารตารางผลิตโรงงาน 69 kV+ เพื่อใช้ไฟ Off-Peak (2.75 vs On-Peak 4.26 THB/kWh) และคุม AR Aging + จองระวางเรือล่วงหน้า",
       "owner": "COO & CFO",
-      "timeline": "ก่อน 1 ธ.ค. 2026",
-      "trigger": "ประกาศ PSS สายเรือ > 1,000 USD/FEU หรือลูกหนี้ค้างชำระ > 60 วัน"
+      "timeline": "รอบปฏิบัติการรายเดือน",
+      "trigger": "Peak Demand เกินเป้าหรือประกาศค่า Ft งวดใหม่จาก กกพ."
     }
   ]
 }
