@@ -438,11 +438,130 @@ def fetch_rss_headlines(limit_per_feed: int = 4) -> list[dict[str, str]]:
     return items
 
 
+def _parse_thai_be_date(date_str: str) -> str | None:
+    m = re.match(r"^\s*(\d{1,2})/(\d{1,2})/(\d{4})\s*$", date_str or "")
+    if not m:
+        return None
+    d, mo, y = int(m.group(1)), int(m.group(2)), int(m.group(3))
+    if y > 2400:
+        y -= 543
+    try:
+        return dt.date(y, mo, d).isoformat()
+    except ValueError:
+        return None
+
+
+def fetch_thai_diesel_b7(now_bkk: dt.datetime) -> dict[str, Any]:
+    """
+    Fetches official Bangkok retail Diesel B7 price (THB/Liter) from Bangchak API
+    (aligned with EPPO/PTT retail reference).
+    """
+    api_url = "https://oil-price.bangchak.co.th/ApiOilPrice2/th"
+    eppo_url = "https://www.eppo.go.th/data-energy-statistic/energy-price-th/%E0%B8%A3%E0%B8%B2%E0%B8%84%E0%B8%B2%E0%B8%82%E0%B8%B2%E0%B8%A2%E0%B8%9B%E0%B8%A5%E0%B8%B5%E0%B8%81%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%A1%E0%B8%B1%E0%B8%99/"
+    raw = http_get(api_url, timeout=12)
+    if not raw:
+        return {"ok": False, "error": "Bangchak Oil API unreachable"}
+    try:
+        payload = json.loads(raw)
+        rec = payload[0]
+        oil_list = json.loads(rec["OilList"])
+        target = None
+        for item in oil_list:
+            name = item.get("OilName", "")
+            if "ไฮดีเซล" in name and "พรีเมียม" not in name and "B20" not in name:
+                target = item
+                break
+        if not target:
+            return {"ok": False, "error": "Diesel B7 row not found in Bangchak API"}
+
+        price = round(float(target["PriceToday"]), 2)
+        prev_price = round(float(target.get("PriceYesterday") or price), 2)
+        diff_y = float(target.get("PriceDifYesterday") or 0.0)
+        change_pct = round((diff_y / prev_price) * 100.0, 2) if (diff_y != 0 and prev_price) else 0.0
+
+        obs_iso = _parse_thai_be_date(rec.get("OilDateNow", "")) or now_bkk.date().isoformat()
+        eff_iso = _parse_thai_be_date(rec.get("OilPriceDate", "")) or obs_iso
+        return {
+            "ok": True,
+            "price": price,
+            "prev_price": prev_price,
+            "diff_yesterday": round(diff_y, 2),
+            "change_pct": change_pct,
+            "observation_date": obs_iso,
+            "effective_date": eff_iso,
+            "remark_th": rec.get("OilRemark2", ""),
+            "source_name": "Bangchak / EPPO",
+            "source_url": eppo_url,
+            "data_quality": "VERIFIED CURRENT",
+        }
+    except Exception as exc:
+        return {"ok": False, "error": f"Diesel B7 parse error: {exc}"}
+
+
+def fetch_thai_factory_electricity(now_bkk: dt.datetime) -> dict[str, Any]:
+    """
+    Fetches Thailand Industrial Electricity Tariff (Type 4 Large General Service,
+    TOU 69 kV & over) from MEA + latest Ft surcharge from PEA.
+    """
+    pea_ft_url = "https://www.pea.co.th/our-services/tariff/ft"
+    mea_type4_url = "https://www.mea.or.th/our-services/service-rates/other/fsFTSa4DY"
+
+    ft_rate = None
+    ft_period = ""
+    pea_html = http_get(pea_ft_url, timeout=12)
+    if pea_html:
+        txt = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", pea_html))
+        m_ft = re.search(
+            r"ค่า\s*Ft\s*ประจำเดือน\s*([^\n<]+?)\s*หน่วยละ\s*([+-]?\d+\.\d+)\s*บาท",
+            txt,
+        )
+        if m_ft:
+            ft_period = m_ft.group(1).strip()
+            ft_rate = float(m_ft.group(2))
+
+    if ft_rate is None:
+        return {"ok": False, "error": "PEA Ft value not found"}
+
+    # Parse MEA Type 4.2.1 (69 kV & over) TOU base tariff; keep ERC published base fallback
+    demand_charge, on_peak_base, off_peak_base = 74.14, 4.1025, 2.5849
+    mea_html = http_get(mea_type4_url, timeout=12)
+    if mea_html:
+        m_txt = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", mea_html))
+        m_tou = re.search(
+            r"4\.2\.1\s*แรงดัน\s*69\s*กิโลโวลต์ขึ้นไป\s*(\d+\.\d+)\s+0\s+(\d+\.\d+)\s+(\d+\.\d+)",
+            m_txt,
+        )
+        if m_tou:
+            demand_charge = float(m_tou.group(1))
+            on_peak_base = float(m_tou.group(2))
+            off_peak_base = float(m_tou.group(3))
+
+    on_peak_total = round(on_peak_base + ft_rate, 2)
+    off_peak_total = round(off_peak_base + ft_rate, 2)
+    return {
+        "ok": True,
+        "price": on_peak_total,
+        "on_peak_total": on_peak_total,
+        "off_peak_total": off_peak_total,
+        "on_peak_base": on_peak_base,
+        "off_peak_base": off_peak_base,
+        "demand_charge": demand_charge,
+        "ft_rate": ft_rate,
+        "ft_period": ft_period,
+        "observation_date": now_bkk.date().isoformat(),
+        "source_name": "PEA / MEA (กกพ.)",
+        "source_url": pea_ft_url,
+        "data_quality": "VERIFIED CURRENT",
+    }
+
+
 def build_raw_payload(now_bkk: dt.datetime, force_soda: bool = False) -> dict[str, Any]:
     usd_thb = fetch_yahoo_quote("THB=X", now_bkk)
     brent = fetch_yahoo_quote("BZ=F", now_bkk)
     lme = fetch_westmetall_aluminium(now_bkk)
     soda = check_soda_ash(now_bkk, force=force_soda)
+    diesel_b7 = fetch_thai_diesel_b7(now_bkk)
+    factory_elec = fetch_thai_factory_electricity(now_bkk)
     headlines = fetch_rss_headlines()
     hinfo = get_holiday_info(now_bkk.date())
 
@@ -459,6 +578,8 @@ def build_raw_payload(now_bkk: dt.datetime, force_soda: bool = False) -> dict[st
             "brent_oil": brent,
             "lme_aluminium": lme,
             "soda_ash": soda,
+            "diesel_b7": diesel_b7,
+            "factory_electricity": factory_elec,
         },
         "news_headlines": headlines,
     }
@@ -583,7 +704,97 @@ def create_incremental_snapshot(raw_payload: dict[str, Any], now_bkk: dt.datetim
                     new_k["change_pct"] = None
                     new_k["change_display"] = "MoM: N/A"
                     new_k["comparison_base"] = "MoM: N/A"
+        elif kid == "diesel_b7" and kraw.get("diesel_b7", {}).get("ok"):
+            r = kraw["diesel_b7"]
+            new_k["price"] = r["price"]
+            new_k["price_display"] = f"{r['price']:.2f}"
+            eff_badge = format_price_badge_th("Prior Close", r["effective_date"]).replace("ราคาปิด ณ", "มีผล ณ")
+            new_k["price_badge_th"] = eff_badge
+            new_k["price_precision_note"] = f"BCP/PTT กทม. (ไม่รวมภาษีท้องถิ่น) | รอบ {r['effective_date']}"
+            new_k["observation_date"] = r["observation_date"]
+            new_k["market_status"] = "ราคาขายปลีกรายวัน"
+            new_k["data_quality"] = r["data_quality"]
+            sign = "+" if r["change_pct"] > 0 else ""
+            new_k["change_pct"] = r["change_pct"]
+            new_k["change_display"] = f"{sign}{r['change_pct']:.2f}% DoD"
+            if r["prev_price"] and r["prev_price"] != r["price"]:
+                new_k["comparison_base"] = f"เทียบราคาเดิม ({r['prev_price']:.2f} THB/L)"
+            else:
+                new_k["comparison_base"] = f"ทรงตัวจากเมื่อวาน ({r['price']:.2f} THB/L)"
+            new_k["financial_impact"] = (
+                f"ดีเซล B7 อยู่ที่ {r['price']:.2f} THB/Liter กระทบต้นทุนขนส่งรถบรรทุก (Freight) และรถยกในโรงงาน KBI/BGA โดยตรง (รอข้อมูลภายในบริษัท)"
+            )
+        elif kid == "factory_electricity" and kraw.get("factory_electricity", {}).get("ok"):
+            r = kraw["factory_electricity"]
+            ft_sign = "+" if r["ft_rate"] > 0 else ""
+            new_k["price"] = r["price"]
+            new_k["price_display"] = f"{r['price']:.2f}"
+            new_k["price_badge_th"] = f"งวด {r['ft_period']}" if r.get("ft_period") else "อัตรา กกพ. ล่าสุด"
+            new_k["price_precision_note"] = (
+                f"69 kV+ TOU: On-Peak {r['price']:.2f} | Off-Peak {r['off_peak_total']:.2f} | Demand {r['demand_charge']:.2f} THB/kW"
+            )
+            new_k["observation_date"] = r["observation_date"]
+            new_k["market_status"] = "อัตราตามงวด Ft"
+            new_k["data_quality"] = r["data_quality"]
+            new_k["change_pct"] = None
+            new_k["change_display"] = f"Ft: {ft_sign}{r['ft_rate']:.4f}"
+            new_k["comparison_base"] = f"ฐาน On-Peak {r['on_peak_base']:.4f} + Ft {ft_sign}{r['ft_rate']:.4f} (ไม่รวม VAT)"
+            new_k["financial_impact"] = (
+                f"ค่าไฟโรงงานระดับ 69 kV+ (KBI เตาหลอม/แปรรูป และ BGA อัดรีด) อิง TOU On-Peak {r['price']:.2f} / Off-Peak {r['off_peak_total']:.2f} THB/kWh (รวม Ft {ft_sign}{r['ft_rate']:.4f}, รอข้อมูลภายในบริษัท)"
+            )
         updated_kpis.append(new_k)
+
+    seen_ids = {k.get("id") for k in updated_kpis}
+    if "diesel_b7" not in seen_ids and kraw.get("diesel_b7", {}).get("ok"):
+        r = kraw["diesel_b7"]
+        sign = "+" if r["change_pct"] > 0 else ""
+        updated_kpis.append({
+            "id": "diesel_b7",
+            "name": "Diesel B7",
+            "category": "Energy / Logistics",
+            "unit": "THB/Liter",
+            "company": "ALL",
+            "price": r["price"],
+            "price_display": f"{r['price']:.2f}",
+            "price_badge_th": format_price_badge_th("Prior Close", r["effective_date"]).replace("ราคาปิด ณ", "มีผล ณ"),
+            "price_precision_note": f"BCP/PTT กทม. (ไม่รวมภาษีท้องถิ่น) | รอบ {r['effective_date']}",
+            "price_basis": "Prior Close",
+            "price_type": "Bangkok Retail Diesel B7",
+            "change_pct": r["change_pct"],
+            "change_display": f"{sign}{r['change_pct']:.2f}% DoD",
+            "comparison_base": f"เทียบราคาเดิม ({r['prev_price']:.2f} THB/L)" if r["prev_price"] != r["price"] else f"ทรงตัวจากเมื่อวาน ({r['price']:.2f} THB/L)",
+            "observation_date": r["observation_date"],
+            "market_status": "ราคาขายปลีกรายวัน",
+            "data_quality": r["data_quality"],
+            "financial_impact": f"ดีเซล B7 อยู่ที่ {r['price']:.2f} THB/Liter กระทบต้นทุนขนส่งรถบรรทุก (Freight) และรถยกในโรงงาน KBI/BGA โดยตรง (รอข้อมูลภายในบริษัท)",
+            "source_name": "Bangchak / EPPO",
+            "source_url": r["source_url"],
+        })
+    if "factory_electricity" not in seen_ids and kraw.get("factory_electricity", {}).get("ok"):
+        r = kraw["factory_electricity"]
+        ft_sign = "+" if r["ft_rate"] > 0 else ""
+        updated_kpis.append({
+            "id": "factory_electricity",
+            "name": "Factory Electricity",
+            "category": "Energy (69 kV+)",
+            "unit": "THB/kWh",
+            "company": "ALL",
+            "price": r["price"],
+            "price_display": f"{r['price']:.2f}",
+            "price_badge_th": f"งวด {r['ft_period']}" if r.get("ft_period") else "อัตรา กกพ. ล่าสุด",
+            "price_precision_note": f"69 kV+ TOU: On-Peak {r['price']:.2f} | Off-Peak {r['off_peak_total']:.2f} | Demand {r['demand_charge']:.2f} THB/kW",
+            "price_basis": "Monthly Benchmark",
+            "price_type": "PEA/MEA Type 4 TOU (69 kV & over) + Ft",
+            "change_pct": None,
+            "change_display": f"Ft: {ft_sign}{r['ft_rate']:.4f}",
+            "comparison_base": f"ฐาน On-Peak {r['on_peak_base']:.4f} + Ft {ft_sign}{r['ft_rate']:.4f} (ไม่รวม VAT)",
+            "observation_date": r["observation_date"],
+            "market_status": "อัตราตามงวด Ft",
+            "data_quality": r["data_quality"],
+            "financial_impact": f"ค่าไฟโรงงานระดับ 69 kV+ (KBI เตาหลอม/แปรรูป และ BGA อัดรีด) อิง TOU On-Peak {r['price']:.2f} / Off-Peak {r['off_peak_total']:.2f} THB/kWh (รวม Ft {ft_sign}{r['ft_rate']:.4f}, รอข้อมูลภายในบริษัท)",
+            "source_name": "PEA / MEA (กกพ.)",
+            "source_url": r["source_url"],
+        })
 
     # Refresh headlines if new ones came in (without fabricating analysis)
     news_list = template.get("news", [])
